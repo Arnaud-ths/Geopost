@@ -1,0 +1,115 @@
+Emailing Templates Revamp – Agency Brief
+Client : Geopost
+Programme : Consumer Relation and Acquisition Program
+
+---
+
+1. CONTEXT
+
+Geopost déploie un Consumer Relation and Acquisition Program sur plusieurs BUs :
+BRT (Italie), DPD CH (Suisse), DPD CZ (République tchèque), DPD SK (Slovaquie) — autres BUs à venir.
+
+Phase 1 (Proof of Concept) : un premier set d'emailings et de push web a été conçu et déployé
+via la Customer Data Platform imagino.
+
+Phase 2 (roll-out) : besoin de réévaluer la pertinence des templates (structure, design, best
+practices techniques) et de lancer un revamp complet pour garantir robustesse, scalabilité et
+facilité d'opération multi-marché.
+
+---
+
+2. KEY ISSUES IDENTIFIED
+
+Les principaux écarts observés sur les emails existants :
+
+- Templates email à optimiser : layouts, accessibilité, impact, UX writing — vs. benchmark
+  concurrence — pour améliorer les conversions.
+- Structure HTML actuelle : limitations sur certaines inbox legacy (notamment anciennes versions
+  d'Outlook), d'où besoin de robustesse accrue.
+- Variations visuelles observées d'un email à l'autre :
+    - usage du logo
+    - tailles de police
+    - structure des blocs de contenu
+  → besoin d'amélioration de la cohérence.
+- Guidelines CRM / email design actuellement limitées et peu formalisées.
+- Déploiements multi-pays et multi-marques (5 marques) demandent un niveau d'adaptation manuel
+  important → potentiel d'amélioration côté scalabilité.
+
+---
+
+3. OBJECTIVES OF THE PROJECT
+
+Refondre et rationaliser les templates email pour :
+
+- Créer des templates clean, simples, flexibles/adaptables et réutilisables.
+- Introduire une approche modulaire (templates + blocs de contenu réutilisables).
+- Améliorer :
+    - lisibilité et accessibilité
+    - cohérence de marque
+    - efficacité du déploiement multi-pays
+    - performance email (engagement, taux de clic)
+- Garantir la pleine conformité aux brand guidelines existantes (pas d'évolution de la tonalité
+  ni du positionnement de marque).
+
+---
+
+4. SCOPE OF WORK – EXPECTED CONTRIBUTIONS
+
+L'agence est invitée à proposer une approche couvrant tout ou partie du scope suivant.
+
+A. AUDIT & RECOMMENDATIONS (optionnel)
+   - Audit graphique et HTML des emails existants
+   - Recommandations content éditorial et UX / CRO
+   - Recommandations best practices email en environnements dégradés (Outlook, dark mode,
+     accessibilité)
+
+B. TEMPLATE CREATION
+   - Refonte de :
+       - 3 templates emails automatisés : welcome email, promote mobile app download,
+         boost sales email
+       - 3 templates one-shot : commercial peak (e.g. Noël, Black Friday, Saint-Valentin),
+         services (e.g. out of home), Singular template (plateforme de boost des ventes SME)
+   - Design aligné sur les brand guidelines existantes
+
+C. HTML INTEGRATION
+   - Intégration HTML robuste de :
+       - Trigger email templates
+       - One-shot templates
+   - Focus fort sur :
+       - compatibilité Outlook
+       - standards d'accessibilité
+       - maintenabilité
+   - Possibilité de créer une librairie modulaire de blocs de contenu (ex. bloc promo
+     intégrable dans n'importe quel type d'email)
+
+---
+
+5. EXPECTED DELIVERABLES
+
+L'agence doit préciser les livrables, par exemple :
+- Documentation audit et recommandations
+- Email guidelines
+- Templates email designés
+- Fichiers HTML intégrés, entièrement testés
+
+---
+
+6. BUDGET & PLANNING EXPECTATIONS
+
+L'agence doit fournir :
+- Un track record client illustrant l'expérience en redesign de campagnes emailing
+- Un détail de budget
+- Organisation du projet, composition d'équipe, expérience
+- Planning haut-niveau et jalons clés
+
+---
+
+7. PROPOSED TIMELINE
+
+- RFP launch :                       4 mai 2026
+- Proposal submission deadline :     22 mai 2026
+- Proposal review & shortlist :      28 mai 2026
+- Pitch presentations (shortlist) :  Semaine du 1er juin 2026
+- Final selection & notification :   5 juin 2026
+- Contracting phase :                à partir du 5 juin 2026
+- Kick-off meeting :                 Semaine du 15 juin 2026
