@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recos CRM — 40 slides</title>
+<style>
+:root {
+  --red:#DC0032; --ink:#1a1a1a; --bg:#0f0f10; --slide:#fff; --muted:#666;
+  --border:#e5e5e5; --p0:#c00021; --p1:#d97706; --p2:#0891b2;
+  --accent:#DC0032; --grey:#2e2e2f;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; height:100%; background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--ink); overflow: hidden; }
+#deck { width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; }
+.slide {
+  display:none; width: min(1200px, 96vw); aspect-ratio: 16/9;
+  background: var(--slide); border-radius: 8px; padding: 56px 72px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+  position: relative; overflow: hidden;
+}
+.slide.active { display: flex; flex-direction: column; }
+.slide h1 { font-size: 44px; font-weight: 800; letter-spacing: -1px; margin: 0 0 8px; line-height: 1.05; }
+.slide h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin: 0 0 24px; line-height: 1.1; color: var(--ink); }
+.slide h2.bordered { padding-bottom: 12px; border-bottom: 3px solid var(--red); display: inline-block; padding-right: 32px; }
+.slide h3 { font-size: 20px; font-weight: 700; margin: 0 0 12px; color: var(--ink); }
+.slide p { font-size: 17px; line-height: 1.6; margin: 0.6em 0; color: #333; }
+.slide ul { padding-left: 22px; }
+.slide li { font-size: 17px; line-height: 1.7; margin: 4px 0; color: #333; }
+.slide .eyebrow { display:inline-block; background: var(--red); color:#fff; padding:5px 14px; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; border-radius:2px; margin-bottom:18px; }
+.slide .muted { color: var(--muted); font-size: 14px; }
+.slide footer.bar {
+  position:absolute; bottom: 18px; left: 72px; right: 72px;
+  display:flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--muted); border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.slide footer.bar .left { display:flex; gap: 18px; align-items: center; }
+.slide footer.bar .brand { color: var(--red); font-weight: 700; letter-spacing: 0.5px; }
+/* Cover */
+.slide.cover { background: linear-gradient(135deg, #1a1a1a 0%, #2e2e2f 100%); color: #fff; padding: 80px; justify-content: center; }
+.slide.cover h1 { color: #fff; font-size: 64px; max-width: 900px; }
+.slide.cover h2 { color: #fff; opacity: 0.7; font-size: 26px; font-weight: 400; }
+.slide.cover p { color: rgba(255,255,255,0.55); font-size: 14px; }
+.slide.cover footer.bar { border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+/* Section divider */
+.slide.section { background: linear-gradient(135deg, #DC0032 0%, #8b0020 100%); color:#fff; justify-content: center; padding: 80px; }
+.slide.section h1 { color:#fff; font-size: 72px; line-height: 1; }
+.slide.section h2 { color: rgba(255,255,255,0.7); font-size: 22px; font-weight: 400; }
+.slide.section .num { font-size: 200px; font-weight: 900; opacity: 0.18; position: absolute; top: 40px; right: 80px; line-height: 1; }
+.slide.section footer.bar { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
+/* Layouts */
+.layout-2col { display:grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; align-content: start; }
+.layout-3col { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; flex: 1; align-content: start; }
+.layout-img-right { display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; flex: 1; align-items: center; }
+.layout-img-right img { max-width:100%; max-height: 480px; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+.layout-img-full { flex:1; display:flex; align-items:center; justify-content:center; }
+.layout-img-full img { max-width:100%; max-height: 100%; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+.card { background:#fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+.card.accent { border-left: 4px solid var(--red); }
+.card h3 { color: var(--red); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.card p { font-size: 14px; margin: 0; }
+.kpi { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 20px 0; }
+.kpi .item { background: #fafafa; border-radius: 8px; padding: 16px; text-align: center; }
+.kpi .item .v { font-size: 32px; font-weight: 800; color: var(--red); line-height:1; }
+.kpi .item .l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: #f5f5f4; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: #555; }
+.badge { display:inline-block; padding: 2px 8px; border-radius:3px; font-size: 11px; font-weight:700; letter-spacing: 0.3px; }
+.badge.p0 { background: #fee2e2; color: var(--p0); }
+.badge.p1 { background: #fef3c7; color: var(--p1); }
+.badge.p2 { background: #cffafe; color: var(--p2); }
+.badge.bu { background: #f1f5f9; color: #475569; }
+.tag { display: inline-block; background: #f1f5f9; color: #475569; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin: 2px; }
+.flow { display:flex; gap: 8px; align-items: stretch; margin: 20px 0; }
+.flow .step { flex: 1; background:#fafafa; border:1px solid var(--border); border-radius:6px; padding:12px; font-size: 12px; position: relative; }
+.flow .step .num { background: var(--red); color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+.flow .step h4 { margin: 0 0 4px; font-size: 13px; }
+.flow .step p { font-size: 11px; margin: 0; color: #555; }
+.arrow { display:flex; align-items: center; color: var(--red); font-weight: 700; }
+/* Page indicator */
+.page-indicator { position: fixed; top: 16px; right: 24px; color: rgba(255,255,255,0.5); font-size: 12px; font-family: monospace; z-index: 10; }
+.nav-hint { position: fixed; bottom: 16px; left: 24px; color: rgba(255,255,255,0.35); font-size: 11px; z-index: 10; }
+/* Print: each slide on its own page */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body { overflow: visible; background: white; height: auto; }
+  #deck { display: block; width: 100%; height: auto; }
+  .slide { display: flex !important; flex-direction: column; page-break-after: always; box-shadow: none; border-radius: 0; aspect-ratio: auto; width: 100%; height: 100vh; min-height: 100vh; max-height: 100vh; }
+  .slide.cover, .slide.section { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page-indicator, .nav-hint { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="page-indicator">1 / 40</div>
+<div class="nav-hint">← → · clic · Ctrl+P pour PDF</div>
+<div id="deck">
+<section class="slide cover">
+        <span class="eyebrow">Recommandations CRM · Geopost</span>
+        <h1>Parcours, templatisation & méthode email</h1>
+        <h2>Phase 2 — Roll-out 6 templates × 5 BUs</h2>
+        <div style="margin-top: auto;">
+          <p>11 mai 2026 · Geopost Lead CRM V1</p>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>Templates Revamp Project</span></div>
+          <div>1 / 40</div>
+        </footer>
+    </section>
+<section class="slide section">
+        <div class="num">01</div>
+        <h2>Partie 01</h2>
+        <h1>Cadre & ambition</h1>
+        <h2 style="font-size:22px; font-weight:400; opacity:0.7;">Ce que la Phase 2 doit délivrer</h2>
+        <footer class="bar">
+          <div class="left"><span class="brand" style="color:#fff;">GEOPOST</span><span>Templates Revamp</span></div>
+          <div>2 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 03 · Ambition Phase 2</span>
+        <h2 class="bordered">De 1 POC fragile à une fabrique scalable</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Constat Phase 1 (POC)</h3>
+        <ul>
+          <li>Templates legacy, code Outlook fragile</li>
+          <li>Variations visuelles d'un email à l'autre</li>
+          <li>Adaptation manuelle lourde par BU</li>
+          <li>Guidelines peu formalisées</li>
+          <li>POC noté <strong>1.3 / 5</strong> dans l'audit</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Ambition Phase 2</h3>
+        <ul>
+          <li><strong>Templates clean</strong>, simples, flexibles, réutilisables</li>
+          <li><strong>Architecture modulaire</strong> : core + blocs + tokens BU</li>
+          <li><strong>Lisibilité &amp; a11y</strong> WCAG AA strict</li>
+          <li><strong>Multi-pays / multi-brand</strong> sans recompilation</li>
+          <li><strong>Performance</strong> : +30% click rate cible <span class="muted">[à confirmer Geopost]</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="kpi" style="margin-top:20px;">
+      <div class="item"><div class="v">6</div><div class="l">Templates à refondre</div></div>
+      <div class="item"><div class="v">5</div><div class="l">BUs au lancement</div></div>
+      <div class="item"><div class="v">~30</div><div class="l">Blocs modulaires cibles</div></div>
+      <div class="item"><div class="v">1</div><div class="l">Librairie unique imagino</div></div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>3 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 04 · Périmètre</span>
+        <h2 class="bordered">6 templates × 5 BUs = 30 livrables, 1 librairie</h2>
+        <div style="flex:1;">
+    <table>
+      <thead><tr><th>Famille</th><th>Template</th><th>Type</th><th>Trigger</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><strong>Trigger automatisés</strong></td><td>Welcome</td><td>Onboarding</td><td>Création compte</td></tr>
+        <tr><td>Promote app</td><td>Acquisition</td><td>J+7 après création</td></tr>
+        <tr><td>Boost sales</td><td>Réactivation</td><td>30j d'inactivité</td></tr>
+        <tr><td rowspan="3"><strong>One-shot</strong></td><td>Commercial peak</td><td>Campagne</td><td>Noël / BF / Saint-Valentin</td></tr>
+        <tr><td>Services</td><td>Information</td><td>Sortie offre out-of-home</td></tr>
+        <tr><td>Singular</td><td>B2B SME</td><td>Boost ventes plateforme</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:20px;">
+      <span class="tag">Geopost corporate</span>
+      <span class="tag">BRT (Italie)</span>
+      <span class="tag">DPD CH</span>
+      <span class="tag">DPD CZ</span>
+      <span class="tag">DPD SK</span>
+      <span class="tag" style="background:#fef3c7;color:#92400e;">+ DPD FR à confirmer scope</span>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>4 / 40</div>
+        </footer>
+    </section>
+<section class="slide section">
+        <div class="num">02</div>
+        <h2>Partie 02</h2>
+        <h1>Méthode email-making</h1>
+        <h2 style="font-size:22px; font-weight:400; opacity:0.7;">La grille de fabrication d'un email Geopost</h2>
+        <footer class="bar">
+          <div class="left"><span class="brand" style="color:#fff;">GEOPOST</span><span>Templates Revamp</span></div>
+          <div>5 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 06 · Anatomie d'un email Geopost</span>
+        <h2 class="bordered">8 zones, 1 grille, 0 surprise</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <ul>
+          <li><strong>1. Préheader</strong> (≤110 car.) — teaser, jamais doublon</li>
+          <li><strong>2. Header</strong> — logo BU + nav optionnelle</li>
+          <li><strong>3. Héro</strong> — H1 texte + visuel décoratif <code>alt=""</code></li>
+          <li><strong>4. Sub-héro</strong> — 1 phrase bénéfice + temps requis</li>
+          <li><strong>5. CTA primaire</strong> — bulletproof ≥44px tactile</li>
+          <li><strong>6. Body modulaire</strong> — 1 à 3 blocs réutilisables max</li>
+          <li><strong>7. CTA secondaire</strong> — optionnel, lien texte</li>
+          <li><strong>8. Footer légal</strong> — adresse + désinscription + RGPD par pays</li>
+        </ul>
+      </div>
+      <div style="background:#fafafa; border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <div style="background:#f1f5f9; padding:6px; margin-bottom:6px; font-size:11px; color:#475569; text-align:center;">1 · Préheader</div>
+        <div style="background:#fff; padding:14px; margin-bottom:6px; border:1px solid var(--border); text-align:center; font-size:13px;">2 · Header / Logo</div>
+        <div style="background:#DC0032; color:#fff; padding:24px; margin-bottom:6px; text-align:center; font-weight:700;">3 · Héro H1 TEXTE<br><span style="font-size:11px; opacity:0.8; font-weight:400;">+ visuel décoratif</span></div>
+        <div style="background:#fff; padding:10px; margin-bottom:6px; border:1px solid var(--border); text-align:center; font-size:13px;">4 · Sub-héro 1 phrase</div>
+        <div style="background:#1a1a1a; color:#fff; padding:14px; margin-bottom:6px; text-align:center; font-size:13px; font-weight:700; border-radius:4px;">5 · CTA primaire</div>
+        <div style="background:#fff; padding:14px; margin-bottom:6px; border:1px solid var(--border); text-align:center; font-size:13px;">6 · Body modulaire</div>
+        <div style="background:#2e2e2f; color:#fff; padding:10px; text-align:center; font-size:11px;">8 · Footer légal</div>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>6 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 07 · Règles d'or non négociables</span>
+        <h2 class="bordered">Ce qu'on ne fait jamais, ce qu'on fait toujours</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3 style="color:#c00021;">❌ Jamais</h3>
+        <ul>
+          <li>Mettre le H1 dans une image</li>
+          <li>Largeur fixe sans <code>@media</code></li>
+          <li>Bouton CTA sans VML/bulletproof</li>
+          <li>Tables sans <code>role="presentation"</code></li>
+          <li><code>&lt;div&gt;</code> en structure principale</li>
+          <li>Padding sur <code>&lt;table&gt;</code> (Outlook l'ignore)</li>
+          <li>Plus de 3 tailles de typo par email</li>
+          <li>CTA en MAJUSCULES (TTS variable)</li>
+          <li>Préheader = doublon du H1</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color:#16a34a;">✓ Toujours</h3>
+        <ul>
+          <li><code>&lt;head&gt;</code> standard XHTML email complet</li>
+          <li><code>meta viewport</code> + <code>color-scheme</code></li>
+          <li>Pack mso : <code>lspace</code>, <code>rspace</code>, <code>line-height-rule</code></li>
+          <li><code>role="presentation"</code> sur tables layout</li>
+          <li>Fallback Arial dans toute stack typo</li>
+          <li>Espacements multiples de 4 ou 8</li>
+          <li>1 seul CTA primaire, ≤4 mots, casse normale</li>
+          <li>Preheader teaser unique (durée, bénéfice)</li>
+          <li>Mentions légales pays-spécifiques complètes</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>7 / 40</div>
+        </footer>
+    </section>
+<section class="slide section">
+        <div class="num">03</div>
+        <h2>Partie 03</h2>
+        <h1>Architecture parcours</h1>
+        <h2 style="font-size:22px; font-weight:400; opacity:0.7;">Customer journey CRM Geopost</h2>
+        <footer class="bar">
+          <div class="left"><span class="brand" style="color:#fff;">GEOPOST</span><span>Templates Revamp</span></div>
+          <div>8 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 09 · Vue d'ensemble parcours</span>
+        <h2 class="bordered">5 moments de vie destinataire × 5 BUs</h2>
+        <div style="flex:1;">
+    <div class="flow">
+      <div class="step"><div class="num">1</div><h4>Acquisition</h4><p>Welcome onboarding<br>+ promote app</p></div>
+      <div class="step"><div class="num">2</div><h4>Activation</h4><p>Première utilisation<br>tracking colis</p></div>
+      <div class="step"><div class="num">3</div><h4>Engagement</h4><p>Services contextuels<br>out-of-home, options</p></div>
+      <div class="step"><div class="num">4</div><h4>Rétention</h4><p>Boost sales<br>réactivation 30j+</p></div>
+      <div class="step"><div class="num">5</div><h4>Advocacy</h4><p>Enquête satisfaction<br>parrainage</p></div>
+    </div>
+    <h3 style="margin-top:24px;">Moments saisonniers superposés</h3>
+    <div style="display:flex; gap:12px; margin-top:8px;">
+      <span class="tag" style="background:#fee2e2;color:#c00021;">🎄 Peak Noël (nov-déc)</span>
+      <span class="tag" style="background:#fef3c7;color:#92400e;">Black Friday (nov)</span>
+      <span class="tag" style="background:#fce7f3;color:#be185d;">💝 Saint-Valentin (fév)</span>
+      <span class="tag" style="background:#dbeafe;color:#1e40af;">Singular B2B (continu)</span>
+    </div>
+    <p class="muted" style="margin-top:20px;">Chaque parcours est <strong>déclinable</strong> sur les 5 BUs avec mêmes blocs, tokens BU différents (couleur, logo, langue, devise, mention légale).</p>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>9 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 10 · Triggers & règles de déclenchement</span>
+        <h2 class="bordered">Quand chaque email part de imagino</h2>
+        <div style="flex:1;">
+    <table>
+      <thead><tr><th>Template</th><th>Trigger</th><th>Délai</th><th>Fréquence cap</th><th>KPI primaire</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Welcome</strong></td><td>Création compte CDP</td><td>Immédiat</td><td>1 / compte</td><td>Activation J+7</td></tr>
+        <tr><td><strong>Promote app</strong></td><td>Compte créé + pas d'app</td><td>J+7</td><td>1 / compte / 90j</td><td>Install / open</td></tr>
+        <tr><td><strong>Boost sales</strong></td><td>30j sans envoi colis</td><td>J+30 inactivité</td><td>Max 3 / an</td><td>Réactivation J+14</td></tr>
+        <tr><td><strong>Peak commercial</strong></td><td>Date fenêtre marketing</td><td>J-7 avant pic</td><td>Max 2 / fenêtre</td><td>Click-to-open</td></tr>
+        <tr><td><strong>Services</strong></td><td>Sortie offre / change life event</td><td>J+1</td><td>1 / offre</td><td>Awareness + click</td></tr>
+        <tr><td><strong>Singular</strong></td><td>Engagement compte B2B SME</td><td>Variable</td><td>Lifecycle</td><td>MRR / revenu</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:16px;">Tous les triggers sont câblés dans imagino (CDP). Le contenu est <em>rendu côté serveur</em> avec tokens BU + tokens destinataire.</p>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>10 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 11 · KPIs par parcours</span>
+        <h2 class="bordered">Ce qu'on mesure, ce qu'on optimise</h2>
+        <div style="flex:1;">
+    <div class="layout-3col">
+      <div class="card">
+        <h3>Délivrabilité</h3>
+        <p><strong>Cible :</strong> ≥97% inbox<br><strong>Diag :</strong> bounce, spam, soft bounce</p>
+      </div>
+      <div class="card">
+        <h3>Ouverture</h3>
+        <p><strong>Cible :</strong> 25-35% open<br><strong>Diag :</strong> objet, preheader, sender name</p>
+      </div>
+      <div class="card">
+        <h3>Engagement</h3>
+        <p><strong>Cible :</strong> 4-8% CTR<br><strong>Diag :</strong> H1, CTA, hiérarchie</p>
+      </div>
+      <div class="card">
+        <h3>Conversion</h3>
+        <p><strong>Cible :</strong> dépend trigger<br><strong>Diag :</strong> CTA, landing align</p>
+      </div>
+      <div class="card">
+        <h3>Désabonnement</h3>
+        <p><strong>Cible :</strong> &lt;0.2% / envoi<br><strong>Diag :</strong> fréquence, pertinence</p>
+      </div>
+      <div class="card">
+        <h3>Rendu cross-client</h3>
+        <p><strong>Cible :</strong> 0 régression<br><strong>Outil :</strong> Litmus / Email on Acid</p>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:16px;">Tous chiffres cibles à confirmer Geopost. Benchmark secteur logistique/services 2025.</p>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>11 / 40</div>
+        </footer>
+    </section>
+<section class="slide section">
+        <div class="num">04</div>
+        <h2>Partie 04</h2>
+        <h1>Les 6 templates</h1>
+        <h2 style="font-size:22px; font-weight:400; opacity:0.7;">Anatomie, copy framework, KPIs par template</h2>
+        <footer class="bar">
+          <div class="left"><span class="brand" style="color:#fff;">GEOPOST</span><span>Templates Revamp</span></div>
+          <div>12 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 13 · Template Welcome</span>
+        <h2 class="bordered">Vision — Welcome</h2>
+        <div style="flex:1;">
+        <div class="layout-2col">
+          <div>
+            <h3>Mission</h3>
+            <p>Onboarder le destinataire après création de compte. <strong>Confirmer la promesse, donner les 3 actions clés à faire dans les 7 prochains jours</strong>, créer le réflexe d'usage.</p>
+            <h3 style="margin-top:18px;">Quand envoyer</h3>
+            <p>Trigger immédiat à la création du compte CDP imagino. 1 envoi unique, jamais ré-envoyé.</p>
+          </div>
+          <div>
+            <h3>Audience</h3>
+            <p>Tout nouveau compte (B2C + SME B2B). Segmentation BU par localisation + langue.</p>
+            <h3 style="margin-top:18px;">KPI primaire</h3>
+            <p><strong>Taux d'activation J+7 (≥1 colis envoyé OU app installée)</strong></p>
+          </div>
+        </div>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>13 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 14 · Template Welcome</span>
+        <h2 class="bordered">Séquence — Welcome</h2>
+        <div style="flex:1;">
+        <div class="flow">
+        
+    <div class="step"><div class="num">1</div><h4>Email Welcome (J0)</h4><p>Confirme compte + 3 actions</p></div>
+    <div class="step"><div class="num">2</div><h4>Reminder soft (J+3)</h4><p>Si aucune action — push 1 action prioritaire</p></div>
+    <div class="step"><div class="num">3</div><h4>Push app (J+7)</h4><p>Voir template <strong>Promote app</strong></p></div>
+    <div class="step"><div class="num">4</div><h4>Sortie séquence</h4><p>Sinon → parcours engagement standard</p></div>
+    
+        </div>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>14 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 15 · Template Welcome</span>
+        <h2 class="bordered">Copy framework — Welcome</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Objet (3 variantes A/B/C)</h3>
+        <ul>
+          <li>« Bienvenue chez {BU}, voici vos 3 prochaines étapes »</li>
+          <li>« Votre compte {BU} est prêt — 2 minutes pour démarrer »</li>
+          <li>« {Prénom}, bienvenue. On commence par où ? »</li>
+        </ul>
+        <h3 style="margin-top:14px;">Preheader (≤110)</h3>
+        <p>« Activez votre compte en 3 étapes simples. Comptez 2 minutes maximum. »</p>
+      </div>
+      <div>
+        <h3>H1 (texte HTML, jamais image)</h3>
+        <p><strong>« Bienvenue chez {BU}. »</strong></p>
+        <h3 style="margin-top:14px;">Sub-héro</h3>
+        <p>« 3 actions pour démarrer. <strong>2 minutes</strong> chrono. »</p>
+        <h3 style="margin-top:14px;">CTA primaire</h3>
+        <p>« <strong>Activer mon compte</strong> » (1 seul, ≥44px tactile)</p>
+        <h3 style="margin-top:14px;">Body</h3>
+        <p>3 cards verticales : ① Confirmer adresse · ② Télécharger l'app · ③ Envoyer un premier colis. Chacune 1 phrase max + lien.</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>15 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 16 · Template Welcome</span>
+        <h2 class="bordered">Variations BU & KPIs cibles</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Tokens BU à substituer</h3>
+        <table>
+          <thead><tr><th>Token</th><th>Exemple BRT</th><th>Exemple DPD CH</th></tr></thead>
+          <tbody>
+            <tr><td><code>{BU}</code></td><td>BRT</td><td>DPD Suisse</td></tr>
+            <tr><td><code>{COLOR_PRIMARY}</code></td><td>#E32119</td><td>#DC0032</td></tr>
+            <tr><td><code>{LANGUE}</code></td><td>it-IT</td><td>fr-CH</td></tr>
+            <tr><td><code>{DEVISE}</code></td><td>EUR</td><td>CHF</td></tr>
+            <tr><td><code>{LEGAL_BU}</code></td><td>Adresse BRT IT + RGPD IT</td><td>Adresse DPD CH + RGPD CH/FADP</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3>KPIs cibles Welcome</h3>
+        <div class="kpi" style="grid-template-columns: 1fr 1fr;">
+          <div class="item"><div class="v">≥35%</div><div class="l">Open rate</div></div>
+          <div class="item"><div class="v">≥12%</div><div class="l">CTR</div></div>
+          <div class="item"><div class="v">≥40%</div><div class="l">Activation J+7</div></div>
+          <div class="item"><div class="v">&lt;0.1%</div><div class="l">Désabonnement</div></div>
+        </div>
+        <p class="muted" style="margin-top:8px;">Benchmarks logistique 2025. À calibrer après 30j de prod.</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>16 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 17 · Template Promote app</span>
+        <h2 class="bordered">Vision — Promote app</h2>
+        <div style="flex:1;">
+        <div class="layout-2col">
+          <div>
+            <h3>Mission</h3>
+            <p>Convertir l'inscription web en <strong>install mobile</strong>. Vendre les 3 avantages app : tracking temps réel, notifications push, gestion livraison à domicile.</p>
+            <h3 style="margin-top:18px;">Quand envoyer</h3>
+            <p>J+7 après création de compte si app non installée. 1 relance max à J+21 si non-install.</p>
+          </div>
+          <div>
+            <h3>Audience</h3>
+            <p>Comptes sans installation app détectée (lien CDP × Firebase / AppsFlyer).</p>
+            <h3 style="margin-top:18px;">KPI primaire</h3>
+            <p><strong>Install rate + first open dans les 48h post-clic</strong></p>
+          </div>
+        </div>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>17 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 18 · Template Promote app</span>
+        <h2 class="bordered">Copy framework — Promote app</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Objet</h3>
+        <ul>
+          <li>« Suivez vos colis en temps réel. L'app {BU}. »</li>
+          <li>« {Prénom}, ne ratez plus jamais une livraison »</li>
+        </ul>
+        <h3 style="margin-top:14px;">Preheader</h3>
+        <p>« Notifications, tracking, modifications de dernière minute — tout depuis votre mobile. »</p>
+      </div>
+      <div>
+        <h3>H1</h3>
+        <p><strong>« Vos colis, dans votre poche. »</strong></p>
+        <h3 style="margin-top:14px;">3 bénéfices (cards)</h3>
+        <ul>
+          <li>📍 Tracking temps réel</li>
+          <li>🔔 Notifications push</li>
+          <li>⚙️ Modifier livraison en 1 tap</li>
+        </ul>
+        <h3 style="margin-top:14px;">CTA</h3>
+        <p>2 boutons : « <strong>App Store</strong> » + « <strong>Google Play</strong> » (deep links).</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>18 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 19 · Template Promote app</span>
+        <h2 class="bordered">Particularités techniques & déclinaison BU</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Particularités HTML</h3>
+        <ul>
+          <li><strong>Deep links</strong> par OS : iOS Universal Link + Android App Link</li>
+          <li><strong>UTM standardisés</strong> : <code>utm_source=email&amp;utm_medium=trigger&amp;utm_campaign=promoteapp&amp;utm_content={BU}</code></li>
+          <li><strong>QR code de secours</strong> (desktop) — image décorative + alt explicite</li>
+          <li><strong>Fallback Outlook</strong> : badges App/Play en images optimisées + lien texte</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Déclinaison BU</h3>
+        <ul>
+          <li><strong>BRT</strong> — app BRT MyDelivery (IT)</li>
+          <li><strong>DPD CH</strong> — app DPD Switzerland</li>
+          <li><strong>DPD CZ / SK</strong> — app DPD Online</li>
+          <li><strong>Geopost corp</strong> — pas d'app utilisateur final, non applicable</li>
+        </ul>
+        <p class="muted" style="margin-top:14px;">Le template <em>ne s'envoie pas</em> pour les BUs sans app — la modularité doit absorber l'exclusion via condition CDP.</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>19 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 20 · Template Boost sales</span>
+        <h2 class="bordered">Vision — Boost sales</h2>
+        <div style="flex:1;">
+        <div class="layout-2col">
+          <div>
+            <h3>Mission</h3>
+            <p>Réactiver un destinataire inactif depuis 30j. <strong>Rappeler la valeur</strong> du service + lever un frein perçu (prix, complexité) via <em>1 promo ou 1 simplification</em>.</p>
+            <h3 style="margin-top:18px;">Quand envoyer</h3>
+            <p>J+30 d'inactivité (pas d'envoi de colis). Max 3 envois / an / compte, 90j de gap minimum.</p>
+          </div>
+          <div>
+            <h3>Audience</h3>
+            <p>Comptes inactifs 30-180j. Au-delà de 180j → parcours dédié re-engagement.</p>
+            <h3 style="margin-top:18px;">KPI primaire</h3>
+            <p><strong>Taux de réactivation J+14 (≥1 colis envoyé)</strong></p>
+          </div>
+        </div>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>20 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 21 · Template Boost sales</span>
+        <h2 class="bordered">Copy framework — Boost sales</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Objet (variant levier promo / utilité)</h3>
+        <ul>
+          <li>Levier <strong>prix</strong> : « -20% sur votre prochain envoi {BU} »</li>
+          <li>Levier <strong>simplicité</strong> : « Envoyer un colis n'a jamais été aussi rapide »</li>
+          <li>Levier <strong>nouveauté</strong> : « 3 nouveautés {BU} à découvrir »</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Structure</h3>
+        <ul>
+          <li><strong>H1</strong> bénéfice tangible (« Économisez 20% »)</li>
+          <li><strong>Sub-héro</strong> rappel ancienneté (« Cela fait un mois… »)</li>
+          <li><strong>Bloc levier</strong> : promo OU 3 nouveautés OU tutoriel</li>
+          <li><strong>CTA primaire</strong> orienté action (« Profiter de l'offre »)</li>
+          <li><strong>CTA secondaire</strong> faible-engagement (« Voir les options »)</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>21 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 22 · Template Boost sales</span>
+        <h2 class="bordered">Personnalisation & règles d'arrêt</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Variables de personnalisation</h3>
+        <ul>
+          <li><code>{Prénom}</code> dans objet (boost open +5-8%)</li>
+          <li><code>{Dernier_envoi}</code> dans sub-héro (« cela fait 32 jours… »)</li>
+          <li><code>{Préférence_destination}</code> si connue (« vers {Pays} »)</li>
+          <li><code>{Code_promo}</code> + <code>{Date_expiration}</code> dans bloc levier</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Règles d'arrêt</h3>
+        <ul>
+          <li>Si destinataire désabonne après envoi 1 ou 2 → stop</li>
+          <li>Si pas d'open après 3 envois → freeze 6 mois</li>
+          <li>Si conversion après 1 envoi → exit séquence boost</li>
+          <li>Si peak commercial en cours → priorité peak, boost reporté</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>22 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 23 · Template Peak commercial</span>
+        <h2 class="bordered">Vision — Peak commercial</h2>
+        <div style="flex:1;">
+        <div class="layout-2col">
+          <div>
+            <h3>Mission</h3>
+            <p>Capitaliser sur les <strong>3 moments forts de l'année</strong> (Noël, Black Friday, Saint-Valentin). Vendre la <em>tranquillité</em> : « Vos cadeaux livrés à temps, sans stress. »</p>
+            <h3 style="margin-top:18px;">Quand envoyer</h3>
+            <p>Fenêtre marketing fixe annuelle : Noël (mi-nov → 22 déc), BF (semaine BF), Saint-Valentin (1-13 fév).</p>
+          </div>
+          <div>
+            <h3>Audience</h3>
+            <p>Base active 12 mois. Exclure inactifs &gt;180j. Possibilité segmentation B2C vs B2B SME.</p>
+            <h3 style="margin-top:18px;">KPI primaire</h3>
+            <p><strong>Volume d'expéditions sur la fenêtre vs N-1</strong></p>
+          </div>
+        </div>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>23 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 24 · Template Peak commercial</span>
+        <h2 class="bordered">Copy framework — Peak commercial</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Architecture campagne Noël (exemple)</h3>
+        <ul>
+          <li><strong>J-21</strong> Email 1 — anticipation (« Pensez à vos colis Noël »)</li>
+          <li><strong>J-14</strong> Email 2 — last-call délais (« Plus que X jours »)</li>
+          <li><strong>J-7</strong> Email 3 — urgence + alternatives (« Express disponible »)</li>
+        </ul>
+        <h3 style="margin-top:14px;">Tonalité</h3>
+        <p>Bienveillante, rassurante. Pas de FOMO agressif. Geopost garantit la livraison, pas la peur.</p>
+      </div>
+      <div>
+        <h3>H1 variantes</h3>
+        <ul>
+          <li>« Vos cadeaux à temps. C'est promis. »</li>
+          <li>« Encore 21 jours. Largement le temps de bien faire. »</li>
+        </ul>
+        <h3 style="margin-top:14px;">CTA primaire</h3>
+        <p>« <strong>Voir les délais garantis</strong> » → landing page délais par destination</p>
+        <h3 style="margin-top:14px;">Visuel héro</h3>
+        <p>Décoratif uniquement (paquet emballé, mains, neige). Jamais porteur du H1.</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>24 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 25 · Template Peak commercial</span>
+        <h2 class="bordered">Adaptation par BU & timing local</h2>
+        <div style="flex:1;">
+    <table>
+      <thead><tr><th>BU</th><th>Noël</th><th>Black Friday</th><th>Saint-Valentin</th><th>Particularités locales</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Geopost corp</strong></td><td>✓ B2B</td><td>—</td><td>—</td><td>Communication corporate, jamais retail</td></tr>
+        <tr><td><strong>BRT IT</strong></td><td>✓</td><td>✓</td><td>✓</td><td>Befana (6 jan) à ajouter — campagne locale IT</td></tr>
+        <tr><td><strong>DPD CH</strong></td><td>✓</td><td>✓</td><td>✓</td><td>Fête nationale 1er août — moment alternatif</td></tr>
+        <tr><td><strong>DPD CZ</strong></td><td>✓</td><td>✓</td><td>✓</td><td>Mikuláš (5 déc) — pré-Noël CZ spécifique</td></tr>
+        <tr><td><strong>DPD SK</strong></td><td>✓</td><td>✓</td><td>✓</td><td>Mikuláš (6 déc) — pré-Noël SK</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:14px;">⚠️ <strong>Coordination calendrier</strong> : la modularité doit gérer plusieurs fenêtres simultanées par BU. Conflit BF + Noël en novembre → règle de priorité dans imagino.</p>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>25 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 26 · Template Services</span>
+        <h2 class="bordered">Vision — Services</h2>
+        <div style="flex:1;">
+        <div class="layout-2col">
+          <div>
+            <h3>Mission</h3>
+            <p>Annoncer une <strong>nouvelle offre ou un changement d'usage</strong> (point relais, consigne, livraison hors domicile). Pédagogie + bénéfice utilisateur, pas argumentaire commercial.</p>
+            <h3 style="margin-top:18px;">Quand envoyer</h3>
+            <p>Au lancement d'une offre OU sur change life event (déménagement, premier colis hors zone). One-shot ou trigger ponctuel.</p>
+          </div>
+          <div>
+            <h3>Audience</h3>
+            <p>Base active OU sous-segment géo selon disponibilité du service.</p>
+            <h3 style="margin-top:18px;">KPI primaire</h3>
+            <p><strong>Awareness (open) + adoption (1ère utilisation du service)</strong></p>
+          </div>
+        </div>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>26 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 27 · Template Services</span>
+        <h2 class="bordered">Copy framework — Services</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Exemple : Out-of-home (point relais)</h3>
+        <p><strong>Objet :</strong> « Recevez vos colis quand <em>vous</em> voulez, où <em>vous</em> voulez »</p>
+        <p><strong>Preheader :</strong> « 5 000 points relais {BU}. Le plus proche est peut-être à 3 minutes. »</p>
+        <p><strong>H1 :</strong> « Le point relais qui vous arrange. »</p>
+        <p><strong>Sub-héro :</strong> « Activez l'option en 1 clic dans votre prochain envoi. »</p>
+      </div>
+      <div>
+        <h3>Body modulaire</h3>
+        <ul>
+          <li>1 bloc <em>« Comment ça marche »</em> en 3 étapes (icônes décoratives + texte HTML)</li>
+          <li>1 bloc <em>« Cas d'usage »</em> (« vous voyagez », « vous travaillez tard »)</li>
+          <li>1 bloc CTA + lien <em>« Trouver mon point relais »</em></li>
+        </ul>
+        <h3 style="margin-top:14px;">Ton</h3>
+        <p>Pédagogique, jamais survendeur. On explique, on n'argumente pas.</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>27 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 28 · Template Services</span>
+        <h2 class="bordered">Réutilisable pour toute nouvelle offre</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Cas d'usage du template Services</h3>
+        <ul>
+          <li><strong>Point relais / consigne</strong> — out-of-home delivery</li>
+          <li><strong>Livraison sur RDV</strong> — créneau choisi</li>
+          <li><strong>Retour de colis</strong> — process & options</li>
+          <li><strong>Assurance colis</strong> — protection valeur</li>
+          <li><strong>Suivi avancé</strong> — notifications enrichies</li>
+          <li><strong>Tout nouveau service</strong> — slots futurs</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Architecture pour reuse</h3>
+        <ul>
+          <li>Bloc « héro » paramétrable : <code>{SERVICE_NAME}</code>, <code>{H1}</code>, <code>{IMAGE_ALT}</code></li>
+          <li>Bloc « comment ça marche » : 3 slots paramétrables <code>{ETAPE_N_TITRE}</code> + <code>{ETAPE_N_TEXTE}</code></li>
+          <li>Bloc « cas d'usage » : tableau 2 colonnes paramétrable</li>
+          <li>Bloc CTA : <code>{CTA_LABEL}</code> + <code>{CTA_URL}</code></li>
+        </ul>
+        <p class="muted">→ template Services = blueprint réutilisable, jamais re-développé pour chaque offre.</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>28 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 29 · Template Singular</span>
+        <h2 class="bordered">Vision — Singular</h2>
+        <div style="flex:1;">
+        <div class="layout-2col">
+          <div>
+            <h3>Mission</h3>
+            <p>Email B2B pour la plateforme Singular (boost des ventes SME). <strong>Ton plus pro</strong>, plus orienté ROI, données chiffrées. Pas de tutoiement, pas de promo grand public.</p>
+            <h3 style="margin-top:18px;">Quand envoyer</h3>
+            <p>Lifecycle B2B : onboarding compte SME, milestones d'usage, opportunités revenue. Cadence à définir avec Sales.</p>
+          </div>
+          <div>
+            <h3>Audience</h3>
+            <p>Comptes Singular SME. Segmentation par taille (TPE/PME), secteur, ARR.</p>
+            <h3 style="margin-top:18px;">KPI primaire</h3>
+            <p><strong>MRR / revenu généré + adoption features avancées</strong></p>
+          </div>
+        </div>
+        </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>29 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 30 · Template Singular</span>
+        <h2 class="bordered">Différenciation B2B vs B2C</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Ce qui change vs templates B2C</h3>
+        <ul>
+          <li><strong>Tonalité</strong> : vouvoiement, sobriété, pas d'emoji</li>
+          <li><strong>Sender name</strong> : « {Nom Account Manager} — Geopost Singular »</li>
+          <li><strong>Visuel héro</strong> : data / dashboards / outils, jamais lifestyle</li>
+          <li><strong>Body</strong> : metrics, ROI, témoignages chiffrés</li>
+          <li><strong>CTA</strong> : « Demander une démo », « Voir le rapport », jamais « Profiter »</li>
+          <li><strong>Footer</strong> : signature manuelle Account Manager + téléphone direct</li>
+        </ul>
+      </div>
+      <div>
+        <h3>KPIs Singular</h3>
+        <div class="kpi" style="grid-template-columns: 1fr 1fr;">
+          <div class="item"><div class="v">≥45%</div><div class="l">Open rate B2B</div></div>
+          <div class="item"><div class="v">≥18%</div><div class="l">CTR</div></div>
+          <div class="item"><div class="v">≥8%</div><div class="l">Reply / meeting</div></div>
+          <div class="item"><div class="v">&lt;0.05%</div><div class="l">Désabo (compte stratégique)</div></div>
+        </div>
+        <p class="muted">B2B : engagement individuel &gt; volume.</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>30 / 40</div>
+        </footer>
+    </section>
+<section class="slide section">
+        <div class="num">05</div>
+        <h2>Partie 05</h2>
+        <h1>Déclinaison multi-BU</h1>
+        <h2 style="font-size:22px; font-weight:400; opacity:0.7;">Les 5 marques avec un seul moteur</h2>
+        <footer class="bar">
+          <div class="left"><span class="brand" style="color:#fff;">GEOPOST</span><span>Templates Revamp</span></div>
+          <div>31 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 32 · Tokens BU — le moteur de la multi-brand</span>
+        <h2 class="bordered">Un seul HTML, 5 brand-faces</h2>
+        <div style="flex:1;">
+    <table>
+      <thead><tr><th>Token</th><th>Geopost corp</th><th>BRT</th><th>DPD CH</th><th>DPD CZ</th><th>DPD SK</th></tr></thead>
+      <tbody>
+        <tr><td><code>{COLOR_PRIMARY}</code></td><td>#DC0032</td><td>#E32119 <span class="muted">[à valider]</span></td><td>#DC0032 <span class="muted">[à valider]</span></td><td>#DC0032 <span class="muted">[à valider]</span></td><td>#DC0032 <span class="muted">[à valider]</span></td></tr>
+        <tr><td><code>{COLOR_SECONDARY}</code></td><td>#2e2e2f</td><td>#1a1a1a</td><td>#2e2e2f</td><td>#2e2e2f</td><td>#2e2e2f</td></tr>
+        <tr><td><code>{LOGO_URL}</code></td><td>logo-geopost.svg</td><td>logo-brt.svg</td><td>logo-dpd-ch.svg</td><td>logo-dpd-cz.svg</td><td>logo-dpd-sk.svg</td></tr>
+        <tr><td><code>{LOGO_WIDTH}</code></td><td>140</td><td>140</td><td>140</td><td>140</td><td>140</td></tr>
+        <tr><td><code>{LANGUE}</code></td><td>en-EU</td><td>it-IT</td><td>fr-CH / de-CH</td><td>cs-CZ</td><td>sk-SK</td></tr>
+        <tr><td><code>{DEVISE}</code></td><td>—</td><td>EUR</td><td>CHF</td><td>CZK</td><td>EUR</td></tr>
+        <tr><td><code>{LEGAL_ADDR}</code></td><td>Geopost HQ</td><td>BRT Milan</td><td>DPD CH Buchs</td><td>DPD CZ Praha</td><td>DPD SK Bratislava</td></tr>
+        <tr><td><code>{LEGAL_RGPD}</code></td><td>EU general</td><td>RGPD + privacy IT</td><td>FADP (CH)</td><td>GDPR + CZ act</td><td>GDPR + SK act</td></tr>
+        <tr><td><code>{UNSUB_URL}</code></td><td>geopost.com/...</td><td>brt.it/unsub</td><td>dpd.ch/unsub</td><td>dpd.cz/unsub</td><td>dpd.sk/unsub</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:8px;">Les valeurs <code>[à valider]</code> doivent être confirmées vs charte officielle de chaque BU avant production.</p>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>32 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 33 · Règles de gouvernance multi-BU</span>
+        <h2 class="bordered">Qui décide quoi, qui peut modifier quoi</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Couche corporate (Geopost)</h3>
+        <ul>
+          <li>Architecture template + librairie blocs</li>
+          <li>Règles techniques (Outlook, a11y, mso)</li>
+          <li>Structure parcours CRM</li>
+          <li>KPIs cadre + benchmarks</li>
+          <li><strong>Non modifiable par BU</strong></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Couche BU</h3>
+        <ul>
+          <li>Tokens couleur, logo, langue, devise</li>
+          <li>Mentions légales pays</li>
+          <li>Calendrier campagnes locales (Mikuláš, Befana…)</li>
+          <li>Copy / wording dans la langue locale</li>
+          <li>Sender name + adresse expéditeur</li>
+          <li><strong>Modifiable par BU dans imagino</strong></li>
+        </ul>
+      </div>
+    </div>
+    <h3 style="margin-top:20px;">Process modification template</h3>
+    <p>Toute évolution de la <em>structure</em> ou des <em>règles techniques</em> → demande au Lead CRM Geopost → audit impact 5 BUs → release versionnée. <strong>Aucune BU ne modifie le HTML core.</strong></p>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>33 / 40</div>
+        </footer>
+    </section>
+<section class="slide section">
+        <div class="num">06</div>
+        <h2>Partie 06</h2>
+        <h1>Templatisation</h1>
+        <h2 style="font-size:22px; font-weight:400; opacity:0.7;">L'architecture modulaire de production</h2>
+        <footer class="bar">
+          <div class="left"><span class="brand" style="color:#fff;">GEOPOST</span><span>Templates Revamp</span></div>
+          <div>34 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 35 · Architecture modulaire</span>
+        <h2 class="bordered">Core + Blocs + Tokens = scalabilité</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>3 couches</h3>
+        <ul>
+          <li><strong>1. Core templates (6)</strong> — squelette HTML par type (welcome, app, boost, peak, services, singular)</li>
+          <li><strong>2. Blocs réutilisables (~30)</strong> — header, héro, sub-héro, CTA, body 1-col, body 2-col, body 3-cards, image-text, banner promo, footer, etc.</li>
+          <li><strong>3. Tokens (~20 / BU)</strong> — couleur, logo, langue, légal, etc.</li>
+        </ul>
+      </div>
+      <div style="background:#fafafa; border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <div style="background:#1a1a1a; color:#fff; padding:10px; margin-bottom:6px; font-size:12px; text-align:center; border-radius:4px;">📐 Core template (1 / parcours)</div>
+        <div style="text-align:center; color:#999; font-size:14px;">↓ assemble</div>
+        <div style="background:#DC0032; color:#fff; padding:10px; margin: 6px 0; font-size:12px; text-align:center; border-radius:4px;">🧱 Blocs réutilisables (~30)</div>
+        <div style="text-align:center; color:#999; font-size:14px;">↓ injecte</div>
+        <div style="background:#f1f5f9; color:#475569; padding:10px; margin-top:6px; font-size:12px; text-align:center; border-radius:4px; border:1px solid #cbd5e1;">🏷️ Tokens BU (~20 / marque)</div>
+        <p class="muted" style="text-align:center; margin-top:10px; font-size:11px;">= 30 emails distincts en production sans 30 codebases</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>35 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 36 · Librairie de blocs cibles (~30)</span>
+        <h2 class="bordered">Le catalogue à construire</h2>
+        <div style="flex:1;">
+    <div class="layout-3col">
+      <div class="card">
+        <h3>Structure (5)</h3>
+        <ul style="font-size:13px;">
+          <li>Wrapper 640px + reset</li>
+          <li>Header logo (1 ligne)</li>
+          <li>Header logo + nav (option)</li>
+          <li>Footer légal complet</li>
+          <li>Spacer / divider</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Héro & titres (4)</h3>
+        <ul style="font-size:13px;">
+          <li>Héro texte + visuel</li>
+          <li>Héro texte plein</li>
+          <li>Bannière promo</li>
+          <li>Section heading</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Body (7)</h3>
+        <ul style="font-size:13px;">
+          <li>Texte 1 colonne</li>
+          <li>Texte 2 colonnes</li>
+          <li>3 cards horizontales</li>
+          <li>3 étapes verticales</li>
+          <li>Image + texte droite</li>
+          <li>Image + texte gauche</li>
+          <li>Quote / témoignage</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>CTA (4)</h3>
+        <ul style="font-size:13px;">
+          <li>CTA bulletproof primary</li>
+          <li>CTA bulletproof secondary</li>
+          <li>2 CTA juxtaposés (App+Play)</li>
+          <li>Lien texte simple</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Spéciaux (6)</h3>
+        <ul style="font-size:13px;">
+          <li>Tracking colis (data dyn.)</li>
+          <li>Point relais carte</li>
+          <li>Code promo bloc</li>
+          <li>Compteur Noël J-X</li>
+          <li>Témoignage Singular B2B</li>
+          <li>QR code app store</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Conformité (4)</h3>
+        <ul style="font-size:13px;">
+          <li>Mention RGPD FR/IT/CH/CZ/SK</li>
+          <li>Désabonnement 1-clic</li>
+          <li>Adresse postale BU</li>
+          <li>Preheader masqué</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>36 / 40</div>
+        </footer>
+    </section>
+<section class="slide section">
+        <div class="num">07</div>
+        <h2>Partie 07</h2>
+        <h1>Roadmap industrialisation</h1>
+        <h2 style="font-size:22px; font-weight:400; opacity:0.7;">Comment on déploie sur 6 mois</h2>
+        <footer class="bar">
+          <div class="left"><span class="brand" style="color:#fff;">GEOPOST</span><span>Templates Revamp</span></div>
+          <div>37 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 38 · Roadmap 6 mois</span>
+        <h2 class="bordered">Du kick-off à la prod 5 BUs</h2>
+        <div style="flex:1;">
+    <table>
+      <thead><tr><th>Phase</th><th>Période</th><th>Livrables</th><th>BUs concernées</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1. Fondations</strong></td><td>Juin 2026 (S25-S26)</td><td>Guidelines email + tokens + audit V2 inter-BU</td><td>Cross-BU</td></tr>
+        <tr><td><strong>2. Pilot template</strong></td><td>Juillet 2026 (S27-S30)</td><td>Welcome end-to-end (design + HTML + tests Litmus) sur 1 BU pilote</td><td>BRT (pilote)</td></tr>
+        <tr><td><strong>3. Réplication</strong></td><td>Août 2026 (S31-S34)</td><td>Welcome répliqué sur 4 autres BUs via tokens</td><td>+ DPD CH, CZ, SK, Geopost</td></tr>
+        <tr><td><strong>4. Vague trigger</strong></td><td>Sept 2026 (S35-S38)</td><td>Promote app + Boost sales sur les 5 BUs</td><td>5 BUs</td></tr>
+        <tr><td><strong>5. Vague one-shot</strong></td><td>Oct 2026 (S39-S42)</td><td>Peak commercial Noël + Services + Singular</td><td>5 BUs</td></tr>
+        <tr><td><strong>6. Stabilisation</strong></td><td>Nov 2026 (S43-S46)</td><td>QA cross-BU + benchmarks 30j prod + retours équipes locales</td><td>5 BUs</td></tr>
+        <tr><td><strong>7. Run &amp; iterate</strong></td><td>Déc 2026 +</td><td>Itérations data-driven + nouveaux services</td><td>5+ BUs</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:8px;">⚠️ <strong>Vague 5 démarre AVANT Noël</strong> pour test campagne Peak en conditions réelles.</p>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>38 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 39 · Dépendances & risques</span>
+        <h2 class="bordered">Ce qui peut faire dérailler le planning</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Dépendances bloquantes Geopost</h3>
+        <ul>
+          <li><strong>Brand guidelines par BU</strong> — palette, logo, ton — à fournir S25</li>
+          <li><strong>3 autres emails POC</strong> — pour audit V2 inter-BU</li>
+          <li><strong>Accès imagino sandbox</strong> par BU pour tests CDP</li>
+          <li><strong>RACI éditorial</strong> par BU — qui valide le copy local ?</li>
+          <li><strong>CDN imagino</strong> pour assets emails (images + fonts)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Risques majeurs identifiés</h3>
+        <ul>
+          <li><strong>R1</strong> · Palette non confirmée → blocage design</li>
+          <li><strong>R2</strong> · Validation BU locale longue → retard prod</li>
+          <li><strong>R3</strong> · Conflit calendrier Peak + Trigger en nov</li>
+          <li><strong>R4</strong> · Régression Outlook sur nouveau client (versions futures)</li>
+          <li><strong>R5</strong> · Désaccord copy local (legal + marketing BU)</li>
+        </ul>
+        <p class="muted">Mitigation : workflow Lead CRM + sous-agents permet audit/itération en heures plutôt qu'en jours (cf. deck 3).</p>
+      </div>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>39 / 40</div>
+        </footer>
+    </section>
+<section class="slide ">
+        <span class="eyebrow">Slide 40 · Synthèse Recos</span>
+        <h2 class="bordered">Ce qu'on livre, ce qu'on gagne</h2>
+        <div style="flex:1;">
+    <div class="layout-2col">
+      <div>
+        <h3>Livrables Phase 2</h3>
+        <ul>
+          <li>6 core templates HTML production-ready</li>
+          <li>~30 blocs modulaires de librairie imagino</li>
+          <li>~20 tokens BU par marque (5 BUs)</li>
+          <li>Guidelines email Geopost v1 (formalisées)</li>
+          <li>Audit cross-BU inter-marque</li>
+          <li>Suite Litmus / EoA de tests automatisés</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Gains attendus</h3>
+        <div class="kpi" style="grid-template-columns: 1fr 1fr;">
+          <div class="item"><div class="v">5×</div><div class="l">BUs servies par 1 codebase</div></div>
+          <div class="item"><div class="v">-70%</div><div class="l">Temps de lancement campagne <span class="muted">[à valider]</span></div></div>
+          <div class="item"><div class="v">+25%</div><div class="l">Click rate vs POC <span class="muted">[hypothèse]</span></div></div>
+          <div class="item"><div class="v">0</div><div class="l">Régression Outlook tolérée</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: auto; padding-top: 16px; border-top: 2px solid var(--red); text-align:center;">
+      <h3 style="color:var(--red); margin:0;">→ Voir Deck 3 — Synthèse workflow agence × agents Claude</h3>
+    </div>
+    </div>
+        <footer class="bar">
+          <div class="left"><span class="brand">GEOPOST</span><span>RECOS CRM · 40 slides</span></div>
+          <div>40 / 40</div>
+        </footer>
+    </section>
+</div>
+
+<script>
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+const ind = document.querySelector('.page-indicator');
+function show(i) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  idx = i;
+  slides.forEach((s, k) => s.classList.toggle('active', k === i));
+  if (ind) ind.textContent = (i + 1) + ' / ' + slides.length;
+  window.location.hash = '#' + (i + 1);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+  else if (e.key === 'Home') { show(0); }
+  else if (e.key === 'End') { show(slides.length - 1); }
+});
+document.addEventListener('click', e => {
+  if (e.target.closest('a')) return;
+  const r = window.innerWidth;
+  if (e.clientX > r * 0.5) show(idx + 1); else show(idx - 1);
+});
+const h = parseInt(window.location.hash.replace('#', ''), 10);
+show((h && !isNaN(h)) ? h - 1 : 0);
+</script>
+
+</body>
+</html>
