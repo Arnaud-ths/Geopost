@@ -1,0 +1,30 @@
+<!--
+  BLOC 16 — Spacer / divider
+  ===========================
+  Usage : espacement vertical entre blocs OU divider visuel.
+  Tokens : {{HEIGHT}} (px, défaut 24), {{DIVIDER}} (true → ligne, false → invisible)
+  Conformité : table-based (Outlook), line-height + height + font-size synchros,
+               role="presentation"
+-->
+
+<!-- Variante SPACER invisible -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td height="{{HEIGHT}}" style="height:{{HEIGHT}}px; line-height:{{HEIGHT}}px; font-size:1px;" aria-hidden="true">&nbsp;</td>
+  </tr>
+</table>
+
+<!-- Variante DIVIDER ligne (à utiliser à la place du spacer si {{DIVIDER}} = true) -->
+<!--
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td class="pad-mobile" style="padding: 16px 32px;" aria-hidden="true">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td height="1" bgcolor="#e5e5e5" class="border-light" style="height:1px; line-height:1px; font-size:1px; background:#e5e5e5;">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+-->

@@ -1,0 +1,87 @@
+<!--
+  BLOC 10 — Body 3 étapes verticales numérotées
+  ==============================================
+  Usage : mode d'emploi, onboarding (Welcome ③ étapes). Stack toujours vertical.
+  Tokens : {{STEP_1_TITLE}}, {{STEP_1_TEXT}}, {{STEP_1_URL}} (optionnel)
+           idem _2, _3
+           {{COLOR_PRIMARY}} (numéro badge)
+  Conformité : numérotation typo (pas image), ordre de lecture cohérent,
+               liens explicites, contraste numéro ≥4.5:1
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td class="pad-mobile" style="padding: 8px 32px 16px 32px;">
+
+      <!-- Step 1 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 16px;">
+        <tr>
+          <td valign="top" width="40" style="width:40px; padding-right: 16px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" valign="middle" width="32" height="32" bgcolor="{{COLOR_PRIMARY}}" style="background:{{COLOR_PRIMARY}}; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;">
+                  1
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td valign="top">
+            <h3 class="text-dark" style="margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;">
+              {{STEP_1_TITLE}}
+            </h3>
+            <p class="text-muted" style="margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;">
+              {{STEP_1_TEXT}}
+              <!-- Lien optionnel : <a href="{{STEP_1_URL}}" style="color:{{COLOR_PRIMARY}};">Voir →</a> -->
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Step 2 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 16px;">
+        <tr>
+          <td valign="top" width="40" style="width:40px; padding-right: 16px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" valign="middle" width="32" height="32" bgcolor="{{COLOR_PRIMARY}}" style="background:{{COLOR_PRIMARY}}; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;">
+                  2
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td valign="top">
+            <h3 class="text-dark" style="margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;">
+              {{STEP_2_TITLE}}
+            </h3>
+            <p class="text-muted" style="margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;">
+              {{STEP_2_TEXT}}
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Step 3 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td valign="top" width="40" style="width:40px; padding-right: 16px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" valign="middle" width="32" height="32" bgcolor="{{COLOR_PRIMARY}}" style="background:{{COLOR_PRIMARY}}; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;">
+                  3
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td valign="top">
+            <h3 class="text-dark" style="margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;">
+              {{STEP_3_TITLE}}
+            </h3>
+            <p class="text-muted" style="margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;">
+              {{STEP_3_TEXT}}
+            </p>
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>

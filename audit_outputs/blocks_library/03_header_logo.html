@@ -1,0 +1,24 @@
+<!--
+  BLOC 03 — Header logo simple
+  =============================
+  Usage : logo BU centré, en haut de l'email, sous le preheader.
+  Tokens : {{LOGO_URL}}, {{LOGO_ALT}}, {{LOGO_WIDTH}} (défaut 140), {{BU_HOMEPAGE}}
+  Conformité : Outlook (width HTML + style CSS), a11y (alt obligatoire, lien titré),
+               dark mode (logo doit fonctionner sur fond clair ET sombre — fournir
+               version SVG ou PNG avec aplats)
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td align="center" class="pad-mobile" style="padding: 24px 24px 16px 24px;">
+      <a href="{{BU_HOMEPAGE}}" title="{{LOGO_ALT}}" target="_blank" style="text-decoration:none; border:0; outline:0;">
+        <img
+          src="{{LOGO_URL}}"
+          alt="{{LOGO_ALT}}"
+          width="{{LOGO_WIDTH}}"
+          height="auto"
+          style="display:block; width:{{LOGO_WIDTH}}px; max-width:{{LOGO_WIDTH}}px; height:auto; border:0; outline:none; text-decoration:none;"
+        />
+      </a>
+    </td>
+  </tr>
+</table>

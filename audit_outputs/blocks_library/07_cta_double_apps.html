@@ -1,0 +1,45 @@
+<!--
+  BLOC 07 — CTA double App Store + Google Play
+  =============================================
+  Usage : Promote app — 2 boutons juxtaposés avec deep links et badges officiels.
+  Tokens : {{APP_STORE_URL}}, {{GOOGLE_PLAY_URL}},
+           {{APP_STORE_BADGE_URL}} (badge officiel localisé),
+           {{GOOGLE_PLAY_BADGE_URL}} (badge officiel localisé)
+  Conformité : badges officiels Apple/Google (versions localisées obligatoires),
+               deep links Universal Link iOS + App Link Android,
+               UTM standardisés dans les URLs, taille ≥44px tactile
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td align="center" class="pad-mobile" style="padding: 16px 32px 32px 32px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+        <tr>
+          <!-- App Store -->
+          <td align="center" valign="middle" style="padding: 0 8px 0 0;">
+            <a href="{{APP_STORE_URL}}" target="_blank" title="Télécharger sur l'App Store" style="text-decoration:none; border:0; outline:0;">
+              <img
+                src="{{APP_STORE_BADGE_URL}}"
+                alt="Télécharger sur l'App Store"
+                width="140"
+                height="48"
+                style="display:block; width:140px; height:48px; border:0; outline:none;"
+              />
+            </a>
+          </td>
+          <!-- Google Play -->
+          <td align="center" valign="middle" style="padding: 0 0 0 8px;">
+            <a href="{{GOOGLE_PLAY_URL}}" target="_blank" title="Disponible sur Google Play" style="text-decoration:none; border:0; outline:0;">
+              <img
+                src="{{GOOGLE_PLAY_BADGE_URL}}"
+                alt="Disponible sur Google Play"
+                width="140"
+                height="48"
+                style="display:block; width:140px; height:48px; border:0; outline:none;"
+              />
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

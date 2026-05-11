@@ -1,0 +1,10 @@
+<!--
+  BLOC 17 — Tracking pixel transparent
+  =====================================
+  Usage : 1x1 px transparent, à insérer en TOUT DERNIER avant </body>,
+          pour tracker les ouvertures côté imagino.
+  Tokens : {{TRACKING_PIXEL_URL}} (URL absolue imagino)
+  Conformité : alt="" (image décorative — pas annoncée aux lecteurs d'écran),
+               URL absolue HTTPS, pas de CID, RGPD-compliant
+-->
+<img src="{{TRACKING_PIXEL_URL}}" alt="" width="1" height="1" style="display:block; width:1px; height:1px; border:0; outline:none;" />

@@ -1,0 +1,49 @@
+<!--
+  BLOC 09 — Body 3 cards horizontales
+  ====================================
+  Usage : 3 bénéfices côte à côte (Promote app, Welcome). Stack vertical sur mobile.
+  Tokens : {{CARD_1_ICON}}, {{CARD_1_TITLE}}, {{CARD_1_TEXT}}
+           idem _2, _3
+  Conformité : table-based stack mobile via class .stack, alts vides sur icônes
+               décoratives, 1 phrase max par card
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td class="pad-mobile" style="padding: 8px 32px 16px 32px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <!-- Card 1 -->
+          <td class="stack" valign="top" width="33%" style="width:33%; padding: 12px 8px;">
+            <div style="font-size:32px; line-height:1; margin-bottom: 8px;" role="img" aria-label="">{{CARD_1_ICON}}</div>
+            <h3 class="text-dark" style="margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;">
+              {{CARD_1_TITLE}}
+            </h3>
+            <p class="text-muted" style="margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;">
+              {{CARD_1_TEXT}}
+            </p>
+          </td>
+          <!-- Card 2 -->
+          <td class="stack" valign="top" width="33%" style="width:33%; padding: 12px 8px;">
+            <div style="font-size:32px; line-height:1; margin-bottom: 8px;" role="img" aria-label="">{{CARD_2_ICON}}</div>
+            <h3 class="text-dark" style="margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;">
+              {{CARD_2_TITLE}}
+            </h3>
+            <p class="text-muted" style="margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;">
+              {{CARD_2_TEXT}}
+            </p>
+          </td>
+          <!-- Card 3 -->
+          <td class="stack" valign="top" width="33%" style="width:33%; padding: 12px 8px;">
+            <div style="font-size:32px; line-height:1; margin-bottom: 8px;" role="img" aria-label="">{{CARD_3_ICON}}</div>
+            <h3 class="text-dark" style="margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;">
+              {{CARD_3_TITLE}}
+            </h3>
+            <p class="text-muted" style="margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;">
+              {{CARD_3_TEXT}}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

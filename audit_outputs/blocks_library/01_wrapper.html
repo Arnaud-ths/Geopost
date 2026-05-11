@@ -1,0 +1,81 @@
+<!--
+  BLOC 01 — Wrapper email + reset
+  ===================================
+  Usage : à utiliser comme racine de TOUT email Geopost.
+  Tokens : {{LANG}}, {{EMAIL_TITLE}}, {{COLOR_PRIMARY}}
+  Conformité : Outlook 2007→M365, dark mode, mobile responsive, a11y
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{LANG}}" xml:lang="{{LANG}}">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+  <title>{{EMAIL_TITLE}}</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <style>
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    body, table, td, p, a, li, blockquote { mso-line-height-rule: exactly; }
+  </style>
+  <![endif]-->
+  <style type="text/css">
+    /* Reset */
+    body, table, td, p, a, li, blockquote { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; display: block; }
+    body { margin: 0; padding: 0; width: 100% !important; background: #f4f4f4; font-family: Arial, Helvetica, sans-serif; }
+    a { color: {{COLOR_PRIMARY}}; text-decoration: underline; }
+    /* Mobile responsive */
+    @media only screen and (max-width: 480px) {
+      .wrapper { width: 100% !important; max-width: 100% !important; }
+      .stack { display: block !important; width: 100% !important; max-width: 100% !important; }
+      .hide-mobile { display: none !important; max-height: 0 !important; overflow: hidden !important; }
+      .pad-mobile { padding-left: 16px !important; padding-right: 16px !important; }
+      .h1-mobile { font-size: 26px !important; line-height: 1.2 !important; }
+      .cta-mobile { width: 100% !important; }
+    }
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body, .bg-light { background: #1a1a1a !important; }
+      .bg-white { background: #2e2e2f !important; }
+      .text-dark { color: #ffffff !important; }
+      .text-muted { color: #a1a1aa !important; }
+      .border-light { border-color: #404040 !important; }
+    }
+    [data-ogsc] body, [data-ogsc] .bg-light { background: #1a1a1a !important; }
+    [data-ogsc] .bg-white { background: #2e2e2f !important; }
+    [data-ogsc] .text-dark { color: #ffffff !important; }
+  </style>
+</head>
+<body class="bg-light">
+  <!-- Wrapper extérieur (Outlook compat) -->
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-light" style="background:#f4f4f4;">
+    <tr>
+      <td align="center" style="padding: 24px 0;">
+
+        <!-- ICI INSÉRER LES BLOCS : preheader, header, hero, body, CTA, footer -->
+        <!-- Wrapper intérieur 640px max -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" class="wrapper bg-white" style="width:640px; max-width:640px; background:#ffffff;">
+          <tr>
+            <td>
+              <!-- {{CONTENT}} -->
+            </td>
+          </tr>
+        </table>
+        <!-- /Wrapper intérieur -->
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

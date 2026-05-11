@@ -1,0 +1,27 @@
+<!--
+  BLOC 06 — CTA primaire bulletproof
+  ===================================
+  Usage : 1 CTA principal par email. Bulletproof = rendu OK sur tous clients
+          y compris Outlook (VML roundrect) + fallback table-based.
+  Tokens : {{CTA_URL}}, {{CTA_LABEL}}, {{COLOR_PRIMARY}}, {{COLOR_PRIMARY_DARK}}
+           (variante hover, optionnel)
+  Conformité : hauteur ≥44px tactile, label ≤4 mots casse normale, focus visible,
+               contraste AA (texte blanc sur primary), bulletproof VML pour Outlook
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td align="center" class="pad-mobile" style="padding: 8px 32px 32px 32px;">
+      <!--[if mso]>
+      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{CTA_URL}}" style="height:48px; v-text-anchor:middle; width:240px;" arcsize="10%" strokecolor="{{COLOR_PRIMARY}}" fillcolor="{{COLOR_PRIMARY}}">
+        <w:anchorlock/>
+        <center style="color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700;">{{CTA_LABEL}}</center>
+      </v:roundrect>
+      <![endif]-->
+      <!--[if !mso]><!-- -->
+      <a href="{{CTA_URL}}" target="_blank" class="cta-mobile" style="display:inline-block; background:{{COLOR_PRIMARY}}; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; line-height: 48px; min-height: 48px; padding: 0 32px; text-decoration:none; text-align:center; border-radius:6px; mso-padding-alt:0; min-width: 200px;">
+        {{CTA_LABEL}}
+      </a>
+      <!--<![endif]-->
+    </td>
+  </tr>
+</table>

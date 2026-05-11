@@ -1,0 +1,14 @@
+<!--
+  BLOC 02 — Preheader masqué
+  ===========================
+  Usage : 1er bloc DANS le wrapper, AVANT le header. Texte non visible mais lu par les
+          clients email dans l'aperçu inbox (sous l'objet).
+  Tokens : {{PREHEADER_TEXT}}
+  Contrainte : ≤110 caractères, jamais doublon du H1
+  Astuce : 200 caractères d'espace insécable derrière pour éviter le "fallback content"
+           du body (Gmail / Apple Mail) qui sinon affiche le premier texte trouvé.
+-->
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff; opacity:0;">
+  {{PREHEADER_TEXT}}
+  &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847;
+</div>

@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geopost — Blocks Library v1</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: #f4f4f4; color: #1a1a1a; line-height: 1.6; }
+header { background: linear-gradient(135deg, #1a1a1a 0%, #2e2e2f 100%); color: #fff; padding: 48px 32px; }
+header .inner { max-width: 1200px; margin: 0 auto; }
+header .eyebrow { display:inline-block; background: #DC0032; color:#fff; padding:4px 12px; font-size: 11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; border-radius:2px; margin-bottom: 16px; }
+header h1 { font-size: 36px; margin: 0 0 8px; font-weight: 800; letter-spacing: -0.5px; }
+header p { margin: 4px 0; color: rgba(255,255,255,0.7); font-size: 14px; }
+.wrap { max-width: 1200px; margin: 32px auto; padding: 0 32px 80px; }
+.intro { background: #fff; border-radius: 8px; padding: 24px 28px; margin-bottom: 32px; border-left: 4px solid #DC0032; }
+.intro h2 { margin: 0 0 8px; font-size: 18px; }
+.intro p { margin: 0; font-size: 14px; color: #555; }
+.block-card { background: #fff; border-radius: 12px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.block-header { padding: 20px 24px; border-bottom: 1px solid #e5e5e5; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.block-header .left { flex: 1; }
+.block-header h2 { margin: 0 0 4px; font-size: 18px; }
+.block-header .num { display:inline-block; background:#1a1a1a; color:#fff; padding:2px 8px; border-radius:4px; font-size:12px; font-family: monospace; margin-right: 8px; }
+.block-header p.desc { margin: 0; color: #666; font-size: 13px; }
+.block-header .tokens { font-family: monospace; font-size: 11px; color: #888; padding: 8px 12px; background: #f9f9f9; border-radius: 4px; max-width: 320px; }
+.block-render { background: #f4f4f4; padding: 24px; }
+.block-render-inner { max-width: 640px; margin: 0 auto; background: #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.block-source { padding: 16px 24px; border-top: 1px solid #e5e5e5; background: #fafafa; }
+.block-source summary { cursor: pointer; font-size: 13px; font-weight: 600; color: #666; user-select: none; }
+.block-source pre { background: #1a1a1a; color: #e5e5e5; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 11px; line-height: 1.4; margin: 12px 0 0; }
+.block-source code { font-family: "SF Mono", Monaco, monospace; }
+.note { font-size: 12px; color: #999; margin-top: 8px; }
+.toc { background: #fff; border-radius: 8px; padding: 20px 24px; margin-bottom: 32px; }
+.toc h2 { margin: 0 0 12px; font-size: 16px; }
+.toc ol { margin: 0; padding-left: 20px; column-count: 2; column-gap: 40px; }
+.toc li { margin: 4px 0; font-size: 13px; }
+.toc a { color: #1a1a1a; text-decoration: none; border-bottom: 1px solid transparent; }
+.toc a:hover { border-color: #DC0032; }
+@media (max-width: 720px) {
+  .block-header { flex-direction: column; }
+  .toc ol { column-count: 1; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <span class="eyebrow">Geopost · Blocks Library v1</span>
+    <h1>Librairie de blocs email</h1>
+    <p>17 blocs conformes — Outlook 2007 → M365 · WCAG 2.1 AA · Dark mode · Mobile responsive · Multi-brand tokens</p>
+    <p>11 mai 2026 · Geopost Lead CRM V1</p>
+  </div>
+</header>
+<div class="wrap">
+
+  <div class="intro">
+    <h2>Comment utiliser cette librairie</h2>
+    <p>Chaque bloc est <strong>standalone</strong> et paramétrable via tokens <code>{<wbr>{TOKEN}<wbr>}</code>. Le wrapper (01) enveloppe les autres blocs. La composition d'un email = wrapper + preheader + header + héro + (1-3 blocs body) + CTA + footer + tracking pixel. Aperçus ci-dessous rendus avec les <strong>valeurs par défaut Geopost corporate</strong> — à substituer par les tokens BU réels en production.</p>
+  </div>
+
+  <div class="toc">
+    <h2>Sommaire</h2>
+    <ol>
+    <li><a href="#block-01_wrapper">01. Wrapper email + reset</a></li>
+    <li><a href="#block-02_preheader">02. Preheader masqué</a></li>
+    <li><a href="#block-03_header_logo">03. Header logo simple</a></li>
+    <li><a href="#block-04_hero_text_image">04. Hero texte + visuel décoratif</a></li>
+    <li><a href="#block-05_sub_hero">05. Sub-héro</a></li>
+    <li><a href="#block-06_cta_primary">06. CTA primaire bulletproof</a></li>
+    <li><a href="#block-07_cta_double_apps">07. CTA double App Store + Google Play</a></li>
+    <li><a href="#block-08_body_1col">08. Body 1 colonne</a></li>
+    <li><a href="#block-09_body_3cards">09. Body 3 cards horizontales</a></li>
+    <li><a href="#block-10_body_3steps">10. Body 3 étapes verticales</a></li>
+    <li><a href="#block-11_image_text_right">11. Image + texte (responsive stack)</a></li>
+    <li><a href="#block-12_banner_promo">12. Bannière promo (code)</a></li>
+    <li><a href="#block-13_metric_data">13. Data metric (B2B Singular)</a></li>
+    <li><a href="#block-14_signature_am">14. Signature manuelle AM (B2B)</a></li>
+    <li><a href="#block-15_footer_legal">15. Footer légal RGPD</a></li>
+    <li><a href="#block-16_spacer">16. Spacer / divider</a></li>
+    <li><a href="#block-17_tracking_pixel">17. Tracking pixel</a></li>
+    </ol>
+  </div>
+
+  
+<section class="block-card" id="block-01_wrapper">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">01</span>Wrapper email + reset</h2>
+      <p class="desc">Base à utiliser pour TOUT email. Inclut head complet, dark mode, responsive, pack mso.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>LANG}}</code><br><code>{{<wbr>EMAIL_TITLE}}</code><br><code>{{<wbr>COLOR_PRIMARY}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!--
+  BLOC 01 — Wrapper email + reset
+  ===================================
+  Usage : à utiliser comme racine de TOUT email Geopost.
+  Tokens : fr-FR, Geopost — Email Preview, #DC0032
+  Conformité : Outlook 2007→M365, dark mode, mobile responsive, a11y
+--&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;fr-FR&quot; xml:lang=&quot;fr-FR&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;meta name=&quot;color-scheme&quot; content=&quot;light dark&quot; /&gt;
+  &lt;meta name=&quot;supported-color-schemes&quot; content=&quot;light dark&quot; /&gt;
+  &lt;meta name=&quot;format-detection&quot; content=&quot;telephone=no, date=no, address=no, email=no&quot; /&gt;
+  &lt;title&gt;Geopost — Email Preview&lt;/title&gt;
+  &lt;!--[if mso]&gt;
+  &lt;noscript&gt;
+    &lt;xml&gt;
+      &lt;o:OfficeDocumentSettings&gt;
+        &lt;o:PixelsPerInch&gt;96&lt;/o:PixelsPerInch&gt;
+      &lt;/o:OfficeDocumentSettings&gt;
+    &lt;/xml&gt;
+  &lt;/noscript&gt;
+  &lt;style&gt;
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    body, table, td, p, a, li, blockquote { mso-line-height-rule: exactly; }
+  &lt;/style&gt;
+  &lt;![endif]--&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+    /* Reset */
+    body, table, td, p, a, li, blockquote { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; display: block; }
+    body { margin: 0; padding: 0; width: 100% !important; background: #f4f4f4; font-family: Arial, Helvetica, sans-serif; }
+    a { color: #DC0032; text-decoration: underline; }
+    /* Mobile responsive */
+    @media only screen and (max-width: 480px) {
+      .wrapper { width: 100% !important; max-width: 100% !important; }
+      .stack { display: block !important; width: 100% !important; max-width: 100% !important; }
+      .hide-mobile { display: none !important; max-height: 0 !important; overflow: hidden !important; }
+      .pad-mobile { padding-left: 16px !important; padding-right: 16px !important; }
+      .h1-mobile { font-size: 26px !important; line-height: 1.2 !important; }
+      .cta-mobile { width: 100% !important; }
+    }
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body, .bg-light { background: #1a1a1a !important; }
+      .bg-white { background: #2e2e2f !important; }
+      .text-dark { color: #ffffff !important; }
+      .text-muted { color: #a1a1aa !important; }
+      .border-light { border-color: #404040 !important; }
+    }
+    [data-ogsc] body, [data-ogsc] .bg-light { background: #1a1a1a !important; }
+    [data-ogsc] .bg-white { background: #2e2e2f !important; }
+    [data-ogsc] .text-dark { color: #ffffff !important; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-light&quot;&gt;
+  &lt;!-- Wrapper extérieur (Outlook compat) --&gt;
+  &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-light&quot; style=&quot;background:#f4f4f4;&quot;&gt;
+    &lt;tr&gt;
+      &lt;td align=&quot;center&quot; style=&quot;padding: 24px 0;&quot;&gt;
+
+        &lt;!-- ICI INSÉRER LES BLOCS : preheader, header, hero, body, CTA, footer --&gt;
+        &lt;!-- Wrapper intérieur 640px max --&gt;
+        &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;640&quot; class=&quot;wrapper bg-white&quot; style=&quot;width:640px; max-width:640px; background:#ffffff;&quot;&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;!-- &lt;!-- Bloc démo --&gt; --&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+        &lt;!-- /Wrapper intérieur --&gt;
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 01 — Wrapper email + reset
+  ===================================
+  Usage : à utiliser comme racine de TOUT email Geopost.
+  Tokens : {{LANG}}, {{EMAIL_TITLE}}, {{COLOR_PRIMARY}}
+  Conformité : Outlook 2007→M365, dark mode, mobile responsive, a11y
+--&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;{{LANG}}&quot; xml:lang=&quot;{{LANG}}&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;meta name=&quot;color-scheme&quot; content=&quot;light dark&quot; /&gt;
+  &lt;meta name=&quot;supported-color-schemes&quot; content=&quot;light dark&quot; /&gt;
+  &lt;meta name=&quot;format-detection&quot; content=&quot;telephone=no, date=no, address=no, email=no&quot; /&gt;
+  &lt;title&gt;{{EMAIL_TITLE}}&lt;/title&gt;
+  &lt;!--[if mso]&gt;
+  &lt;noscript&gt;
+    &lt;xml&gt;
+      &lt;o:OfficeDocumentSettings&gt;
+        &lt;o:PixelsPerInch&gt;96&lt;/o:PixelsPerInch&gt;
+      &lt;/o:OfficeDocumentSettings&gt;
+    &lt;/xml&gt;
+  &lt;/noscript&gt;
+  &lt;style&gt;
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    body, table, td, p, a, li, blockquote { mso-line-height-rule: exactly; }
+  &lt;/style&gt;
+  &lt;![endif]--&gt;
+  &lt;style type=&quot;text/css&quot;&gt;
+    /* Reset */
+    body, table, td, p, a, li, blockquote { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; display: block; }
+    body { margin: 0; padding: 0; width: 100% !important; background: #f4f4f4; font-family: Arial, Helvetica, sans-serif; }
+    a { color: {{COLOR_PRIMARY}}; text-decoration: underline; }
+    /* Mobile responsive */
+    @media only screen and (max-width: 480px) {
+      .wrapper { width: 100% !important; max-width: 100% !important; }
+      .stack { display: block !important; width: 100% !important; max-width: 100% !important; }
+      .hide-mobile { display: none !important; max-height: 0 !important; overflow: hidden !important; }
+      .pad-mobile { padding-left: 16px !important; padding-right: 16px !important; }
+      .h1-mobile { font-size: 26px !important; line-height: 1.2 !important; }
+      .cta-mobile { width: 100% !important; }
+    }
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body, .bg-light { background: #1a1a1a !important; }
+      .bg-white { background: #2e2e2f !important; }
+      .text-dark { color: #ffffff !important; }
+      .text-muted { color: #a1a1aa !important; }
+      .border-light { border-color: #404040 !important; }
+    }
+    [data-ogsc] body, [data-ogsc] .bg-light { background: #1a1a1a !important; }
+    [data-ogsc] .bg-white { background: #2e2e2f !important; }
+    [data-ogsc] .text-dark { color: #ffffff !important; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-light&quot;&gt;
+  &lt;!-- Wrapper extérieur (Outlook compat) --&gt;
+  &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-light&quot; style=&quot;background:#f4f4f4;&quot;&gt;
+    &lt;tr&gt;
+      &lt;td align=&quot;center&quot; style=&quot;padding: 24px 0;&quot;&gt;
+
+        &lt;!-- ICI INSÉRER LES BLOCS : preheader, header, hero, body, CTA, footer --&gt;
+        &lt;!-- Wrapper intérieur 640px max --&gt;
+        &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;640&quot; class=&quot;wrapper bg-white&quot; style=&quot;width:640px; max-width:640px; background:#ffffff;&quot;&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;!-- {{CONTENT}} --&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+        &lt;!-- /Wrapper intérieur --&gt;
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-02_preheader">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">02</span>Preheader masqué</h2>
+      <p class="desc">Texte invisible mais lu par l'aperçu inbox. ≤110 caractères.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>PREHEADER_TEXT}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 02 — Preheader masqué
+  ===========================
+  Usage : 1er bloc DANS le wrapper, AVANT le header. Texte non visible mais lu par les
+          clients email dans l&#x27;aperçu inbox (sous l&#x27;objet).
+  Tokens : Activez votre compte en 3 étapes simples. 2 minutes maximum.
+  Contrainte : ≤110 caractères, jamais doublon du H1
+  Astuce : 200 caractères d&#x27;espace insécable derrière pour éviter le &quot;fallback content&quot;
+           du body (Gmail / Apple Mail) qui sinon affiche le premier texte trouvé.
+--&gt;
+&lt;div style=&quot;display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff; opacity:0;&quot;&gt;
+  Activez votre compte en 3 étapes simples. 2 minutes maximum.
+  &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847;
+&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 02 — Preheader masqué
+  ===========================
+  Usage : 1er bloc DANS le wrapper, AVANT le header. Texte non visible mais lu par les
+          clients email dans l&#x27;aperçu inbox (sous l&#x27;objet).
+  Tokens : {{PREHEADER_TEXT}}
+  Contrainte : ≤110 caractères, jamais doublon du H1
+  Astuce : 200 caractères d&#x27;espace insécable derrière pour éviter le &quot;fallback content&quot;
+           du body (Gmail / Apple Mail) qui sinon affiche le premier texte trouvé.
+--&gt;
+&lt;div style=&quot;display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#ffffff; opacity:0;&quot;&gt;
+  {{PREHEADER_TEXT}}
+  &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847; &amp;#847;
+&lt;/div&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-03_header_logo">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">03</span>Header logo simple</h2>
+      <p class="desc">Logo BU centré, sous le preheader, en haut de l'email.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>LOGO_URL}}</code><br><code>{{<wbr>LOGO_ALT}}</code><br><code>{{<wbr>LOGO_WIDTH}}</code><br><code>{{<wbr>BU_HOMEPAGE}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 03 — Header logo simple
+  =============================
+  Usage : logo BU centré, en haut de l&#x27;email, sous le preheader.
+  Tokens : data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;140&#x27; height=&#x27;40&#x27; viewBox=&#x27;0 0 140 40&#x27;&gt;&lt;rect width=&#x27;140&#x27; height=&#x27;40&#x27; fill=&#x27;%23fff&#x27;/&gt;&lt;text x=&#x27;0&#x27; y=&#x27;30&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;28&#x27; font-weight=&#x27;900&#x27; fill=&#x27;%23DC0032&#x27;&gt;geopost&lt;/text&gt;&lt;/svg&gt;, Geopost, 140 (défaut 140), https://geopost.com
+  Conformité : Outlook (width HTML + style CSS), a11y (alt obligatoire, lien titré),
+               dark mode (logo doit fonctionner sur fond clair ET sombre — fournir
+               version SVG ou PNG avec aplats)
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 24px 24px 16px 24px;&quot;&gt;
+      &lt;a href=&quot;https://geopost.com&quot; title=&quot;Geopost&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; border:0; outline:0;&quot;&gt;
+        &lt;img
+          src=&quot;data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;140&#x27; height=&#x27;40&#x27; viewBox=&#x27;0 0 140 40&#x27;&gt;&lt;rect width=&#x27;140&#x27; height=&#x27;40&#x27; fill=&#x27;%23fff&#x27;/&gt;&lt;text x=&#x27;0&#x27; y=&#x27;30&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;28&#x27; font-weight=&#x27;900&#x27; fill=&#x27;%23DC0032&#x27;&gt;geopost&lt;/text&gt;&lt;/svg&gt;&quot;
+          alt=&quot;Geopost&quot;
+          width=&quot;140&quot;
+          height=&quot;auto&quot;
+          style=&quot;display:block; width:140px; max-width:140px; height:auto; border:0; outline:none; text-decoration:none;&quot;
+        /&gt;
+      &lt;/a&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 03 — Header logo simple
+  =============================
+  Usage : logo BU centré, en haut de l&#x27;email, sous le preheader.
+  Tokens : {{LOGO_URL}}, {{LOGO_ALT}}, {{LOGO_WIDTH}} (défaut 140), {{BU_HOMEPAGE}}
+  Conformité : Outlook (width HTML + style CSS), a11y (alt obligatoire, lien titré),
+               dark mode (logo doit fonctionner sur fond clair ET sombre — fournir
+               version SVG ou PNG avec aplats)
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 24px 24px 16px 24px;&quot;&gt;
+      &lt;a href=&quot;{{BU_HOMEPAGE}}&quot; title=&quot;{{LOGO_ALT}}&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none; border:0; outline:0;&quot;&gt;
+        &lt;img
+          src=&quot;{{LOGO_URL}}&quot;
+          alt=&quot;{{LOGO_ALT}}&quot;
+          width=&quot;{{LOGO_WIDTH}}&quot;
+          height=&quot;auto&quot;
+          style=&quot;display:block; width:{{LOGO_WIDTH}}px; max-width:{{LOGO_WIDTH}}px; height:auto; border:0; outline:none; text-decoration:none;&quot;
+        /&gt;
+      &lt;/a&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-04_hero_text_image">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">04</span>Hero texte + visuel décoratif</h2>
+      <p class="desc">H1 PORTÉ PAR LE TEXTE (jamais l'image). Image décorative alt vide.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>H1_TEXT}}</code><br><code>{{<wbr>HERO_IMAGE_URL}}</code><br><code>{{<wbr>HERO_IMAGE_ALT}}</code><br><code>{{<wbr>HERO_IMAGE_WIDTH}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 04 — Hero texte + visuel décoratif
+  ========================================
+  Usage : H1 PORTÉ PAR LE TEXTE HTML (jamais l&#x27;image), image décorative en dessous
+          avec alt=&quot;&quot; (pour ne pas être annoncée aux lecteurs d&#x27;écran si elle est
+          purement esthétique). Si l&#x27;image porte un message → alt descriptif.
+  Tokens : Bienvenue chez Geopost., data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;640&#x27; height=&#x27;280&#x27; viewBox=&#x27;0 0 640 280&#x27;&gt;&lt;defs&gt;&lt;linearGradient id=&#x27;g&#x27; x1=&#x27;0&#x27; x2=&#x27;1&#x27; y1=&#x27;0&#x27; y2=&#x27;1&#x27;&gt;&lt;stop offset=&#x27;0&#x27; stop-color=&#x27;%23fafafa&#x27;/&gt;&lt;stop offset=&#x27;1&#x27; stop-color=&#x27;%23e5e5e5&#x27;/&gt;&lt;/linearGradient&gt;&lt;/defs&gt;&lt;rect width=&#x27;640&#x27; height=&#x27;280&#x27; fill=&#x27;url(%23g)&#x27;/&gt;&lt;circle cx=&#x27;200&#x27; cy=&#x27;140&#x27; r=&#x27;80&#x27; fill=&#x27;%23DC0032&#x27; opacity=&#x27;0.1&#x27;/&gt;&lt;rect x=&#x27;280&#x27; y=&#x27;100&#x27; width=&#x27;160&#x27; height=&#x27;100&#x27; fill=&#x27;%23fff&#x27; stroke=&#x27;%23DC0032&#x27; stroke-width=&#x27;3&#x27; rx=&#x27;8&#x27;/&gt;&lt;text x=&#x27;320&#x27; y=&#x27;240&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;14&#x27; fill=&#x27;%23999&#x27;&gt;Image décorative&lt;/text&gt;&lt;/svg&gt;,  (vide si déco),
+           640 (défaut 640)
+  Conformité : H1 lisible images bloquées, contraste AA, mobile responsive,
+               taille typo mobile via .h1-mobile, dark mode ready
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px 8px 32px;&quot;&gt;
+      &lt;h1 class=&quot;text-dark h1-mobile&quot; style=&quot;margin:0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; line-height: 1.15; color: #1a1a1a; letter-spacing: -0.5px;&quot;&gt;
+        Bienvenue chez Geopost.
+      &lt;/h1&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; style=&quot;padding: 0;&quot;&gt;
+      &lt;img
+        src=&quot;data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;640&#x27; height=&#x27;280&#x27; viewBox=&#x27;0 0 640 280&#x27;&gt;&lt;defs&gt;&lt;linearGradient id=&#x27;g&#x27; x1=&#x27;0&#x27; x2=&#x27;1&#x27; y1=&#x27;0&#x27; y2=&#x27;1&#x27;&gt;&lt;stop offset=&#x27;0&#x27; stop-color=&#x27;%23fafafa&#x27;/&gt;&lt;stop offset=&#x27;1&#x27; stop-color=&#x27;%23e5e5e5&#x27;/&gt;&lt;/linearGradient&gt;&lt;/defs&gt;&lt;rect width=&#x27;640&#x27; height=&#x27;280&#x27; fill=&#x27;url(%23g)&#x27;/&gt;&lt;circle cx=&#x27;200&#x27; cy=&#x27;140&#x27; r=&#x27;80&#x27; fill=&#x27;%23DC0032&#x27; opacity=&#x27;0.1&#x27;/&gt;&lt;rect x=&#x27;280&#x27; y=&#x27;100&#x27; width=&#x27;160&#x27; height=&#x27;100&#x27; fill=&#x27;%23fff&#x27; stroke=&#x27;%23DC0032&#x27; stroke-width=&#x27;3&#x27; rx=&#x27;8&#x27;/&gt;&lt;text x=&#x27;320&#x27; y=&#x27;240&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;14&#x27; fill=&#x27;%23999&#x27;&gt;Image décorative&lt;/text&gt;&lt;/svg&gt;&quot;
+        alt=&quot;&quot;
+        width=&quot;640&quot;
+        height=&quot;auto&quot;
+        style=&quot;display:block; width:100%; max-width:640px; height:auto; border:0; outline:none; text-decoration:none;&quot;
+      /&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 04 — Hero texte + visuel décoratif
+  ========================================
+  Usage : H1 PORTÉ PAR LE TEXTE HTML (jamais l&#x27;image), image décorative en dessous
+          avec alt=&quot;&quot; (pour ne pas être annoncée aux lecteurs d&#x27;écran si elle est
+          purement esthétique). Si l&#x27;image porte un message → alt descriptif.
+  Tokens : {{H1_TEXT}}, {{HERO_IMAGE_URL}}, {{HERO_IMAGE_ALT}} (vide si déco),
+           {{HERO_IMAGE_WIDTH}} (défaut 640)
+  Conformité : H1 lisible images bloquées, contraste AA, mobile responsive,
+               taille typo mobile via .h1-mobile, dark mode ready
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px 8px 32px;&quot;&gt;
+      &lt;h1 class=&quot;text-dark h1-mobile&quot; style=&quot;margin:0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; line-height: 1.15; color: #1a1a1a; letter-spacing: -0.5px;&quot;&gt;
+        {{H1_TEXT}}
+      &lt;/h1&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; style=&quot;padding: 0;&quot;&gt;
+      &lt;img
+        src=&quot;{{HERO_IMAGE_URL}}&quot;
+        alt=&quot;{{HERO_IMAGE_ALT}}&quot;
+        width=&quot;{{HERO_IMAGE_WIDTH}}&quot;
+        height=&quot;auto&quot;
+        style=&quot;display:block; width:100%; max-width:{{HERO_IMAGE_WIDTH}}px; height:auto; border:0; outline:none; text-decoration:none;&quot;
+      /&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-05_sub_hero">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">05</span>Sub-héro</h2>
+      <p class="desc">1 phrase bénéfice + durée. ≤20 mots.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>SUB_HERO_TEXT}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 05 — Sub-héro (1 phrase + durée)
+  ======================================
+  Usage : sous le hero, 1 phrase bénéfice + durée si applicable.
+  Tokens : 3 actions pour bien démarrer. &lt;strong&gt;2 minutes&lt;/strong&gt; chrono.
+  Contrainte : ≤20 mots, quantifier les durées (« 2 minutes » &gt; « quelques minutes »)
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px 24px 32px;&quot;&gt;
+      &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.5; color: #4a4a4a; max-width: 480px;&quot;&gt;
+        3 actions pour bien démarrer. &lt;strong&gt;2 minutes&lt;/strong&gt; chrono.
+      &lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 05 — Sub-héro (1 phrase + durée)
+  ======================================
+  Usage : sous le hero, 1 phrase bénéfice + durée si applicable.
+  Tokens : {{SUB_HERO_TEXT}}
+  Contrainte : ≤20 mots, quantifier les durées (« 2 minutes » &gt; « quelques minutes »)
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px 24px 32px;&quot;&gt;
+      &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.5; color: #4a4a4a; max-width: 480px;&quot;&gt;
+        {{SUB_HERO_TEXT}}
+      &lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-06_cta_primary">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">06</span>CTA primaire bulletproof</h2>
+      <p class="desc">1 CTA principal. VML Outlook + fallback table. ≥44px tactile.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>CTA_URL}}</code><br><code>{{<wbr>CTA_LABEL}}</code><br><code>{{<wbr>COLOR_PRIMARY}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 06 — CTA primaire bulletproof
+  ===================================
+  Usage : 1 CTA principal par email. Bulletproof = rendu OK sur tous clients
+          y compris Outlook (VML roundrect) + fallback table-based.
+  Tokens : https://geopost.com/activate, Activer mon compte, #DC0032, #a8002a
+           (variante hover, optionnel)
+  Conformité : hauteur ≥44px tactile, label ≤4 mots casse normale, focus visible,
+               contraste AA (texte blanc sur primary), bulletproof VML pour Outlook
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 32px 32px;&quot;&gt;
+      &lt;!--[if mso]&gt;
+      &lt;v:roundrect xmlns:v=&quot;urn:schemas-microsoft-com:vml&quot; xmlns:w=&quot;urn:schemas-microsoft-com:office:word&quot; href=&quot;https://geopost.com/activate&quot; style=&quot;height:48px; v-text-anchor:middle; width:240px;&quot; arcsize=&quot;10%&quot; strokecolor=&quot;#DC0032&quot; fillcolor=&quot;#DC0032&quot;&gt;
+        &lt;w:anchorlock/&gt;
+        &lt;center style=&quot;color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700;&quot;&gt;Activer mon compte&lt;/center&gt;
+      &lt;/v:roundrect&gt;
+      &lt;![endif]--&gt;
+      &lt;!--[if !mso]&gt;&lt;!-- --&gt;
+      &lt;a href=&quot;https://geopost.com/activate&quot; target=&quot;_blank&quot; class=&quot;cta-mobile&quot; style=&quot;display:inline-block; background:#DC0032; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; line-height: 48px; min-height: 48px; padding: 0 32px; text-decoration:none; text-align:center; border-radius:6px; mso-padding-alt:0; min-width: 200px;&quot;&gt;
+        Activer mon compte
+      &lt;/a&gt;
+      &lt;!--&lt;![endif]--&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 06 — CTA primaire bulletproof
+  ===================================
+  Usage : 1 CTA principal par email. Bulletproof = rendu OK sur tous clients
+          y compris Outlook (VML roundrect) + fallback table-based.
+  Tokens : {{CTA_URL}}, {{CTA_LABEL}}, {{COLOR_PRIMARY}}, {{COLOR_PRIMARY_DARK}}
+           (variante hover, optionnel)
+  Conformité : hauteur ≥44px tactile, label ≤4 mots casse normale, focus visible,
+               contraste AA (texte blanc sur primary), bulletproof VML pour Outlook
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 32px 32px;&quot;&gt;
+      &lt;!--[if mso]&gt;
+      &lt;v:roundrect xmlns:v=&quot;urn:schemas-microsoft-com:vml&quot; xmlns:w=&quot;urn:schemas-microsoft-com:office:word&quot; href=&quot;{{CTA_URL}}&quot; style=&quot;height:48px; v-text-anchor:middle; width:240px;&quot; arcsize=&quot;10%&quot; strokecolor=&quot;{{COLOR_PRIMARY}}&quot; fillcolor=&quot;{{COLOR_PRIMARY}}&quot;&gt;
+        &lt;w:anchorlock/&gt;
+        &lt;center style=&quot;color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700;&quot;&gt;{{CTA_LABEL}}&lt;/center&gt;
+      &lt;/v:roundrect&gt;
+      &lt;![endif]--&gt;
+      &lt;!--[if !mso]&gt;&lt;!-- --&gt;
+      &lt;a href=&quot;{{CTA_URL}}&quot; target=&quot;_blank&quot; class=&quot;cta-mobile&quot; style=&quot;display:inline-block; background:{{COLOR_PRIMARY}}; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; line-height: 48px; min-height: 48px; padding: 0 32px; text-decoration:none; text-align:center; border-radius:6px; mso-padding-alt:0; min-width: 200px;&quot;&gt;
+        {{CTA_LABEL}}
+      &lt;/a&gt;
+      &lt;!--&lt;![endif]--&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-07_cta_double_apps">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">07</span>CTA double App Store + Google Play</h2>
+      <p class="desc">Promote app uniquement. Badges officiels obligatoires.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>APP_STORE_URL}}</code><br><code>{{<wbr>GOOGLE_PLAY_URL}}</code><br><code>{{<wbr>APP_STORE_BADGE_URL}}</code><br><code>{{<wbr>GOOGLE_PLAY_BADGE_URL}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 07 — CTA double App Store + Google Play
+  =============================================
+  Usage : Promote app — 2 boutons juxtaposés avec deep links et badges officiels.
+  Tokens : https://apps.apple.com/preview, https://play.google.com/preview,
+           data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;140&#x27; height=&#x27;48&#x27; viewBox=&#x27;0 0 140 48&#x27;&gt;&lt;rect width=&#x27;140&#x27; height=&#x27;48&#x27; rx=&#x27;6&#x27; fill=&#x27;%23000&#x27;/&gt;&lt;text x=&#x27;12&#x27; y=&#x27;20&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;9&#x27; fill=&#x27;%23fff&#x27;&gt;Télécharger dans&lt;/text&gt;&lt;text x=&#x27;12&#x27; y=&#x27;36&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;14&#x27; font-weight=&#x27;700&#x27; fill=&#x27;%23fff&#x27;&gt;App Store&lt;/text&gt;&lt;/svg&gt; (badge officiel localisé),
+           data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;140&#x27; height=&#x27;48&#x27; viewBox=&#x27;0 0 140 48&#x27;&gt;&lt;rect width=&#x27;140&#x27; height=&#x27;48&#x27; rx=&#x27;6&#x27; fill=&#x27;%23000&#x27;/&gt;&lt;text x=&#x27;12&#x27; y=&#x27;20&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;9&#x27; fill=&#x27;%23fff&#x27;&gt;Disponible sur&lt;/text&gt;&lt;text x=&#x27;12&#x27; y=&#x27;36&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;14&#x27; font-weight=&#x27;700&#x27; fill=&#x27;%23fff&#x27;&gt;Google Play&lt;/text&gt;&lt;/svg&gt; (badge officiel localisé)
+  Conformité : badges officiels Apple/Google (versions localisées obligatoires),
+               deep links Universal Link iOS + App Link Android,
+               UTM standardisés dans les URLs, taille ≥44px tactile
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px 32px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; align=&quot;center&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- App Store --&gt;
+          &lt;td align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;padding: 0 8px 0 0;&quot;&gt;
+            &lt;a href=&quot;https://apps.apple.com/preview&quot; target=&quot;_blank&quot; title=&quot;Télécharger sur l&#x27;App Store&quot; style=&quot;text-decoration:none; border:0; outline:0;&quot;&gt;
+              &lt;img
+                src=&quot;data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;140&#x27; height=&#x27;48&#x27; viewBox=&#x27;0 0 140 48&#x27;&gt;&lt;rect width=&#x27;140&#x27; height=&#x27;48&#x27; rx=&#x27;6&#x27; fill=&#x27;%23000&#x27;/&gt;&lt;text x=&#x27;12&#x27; y=&#x27;20&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;9&#x27; fill=&#x27;%23fff&#x27;&gt;Télécharger dans&lt;/text&gt;&lt;text x=&#x27;12&#x27; y=&#x27;36&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;14&#x27; font-weight=&#x27;700&#x27; fill=&#x27;%23fff&#x27;&gt;App Store&lt;/text&gt;&lt;/svg&gt;&quot;
+                alt=&quot;Télécharger sur l&#x27;App Store&quot;
+                width=&quot;140&quot;
+                height=&quot;48&quot;
+                style=&quot;display:block; width:140px; height:48px; border:0; outline:none;&quot;
+              /&gt;
+            &lt;/a&gt;
+          &lt;/td&gt;
+          &lt;!-- Google Play --&gt;
+          &lt;td align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;padding: 0 0 0 8px;&quot;&gt;
+            &lt;a href=&quot;https://play.google.com/preview&quot; target=&quot;_blank&quot; title=&quot;Disponible sur Google Play&quot; style=&quot;text-decoration:none; border:0; outline:0;&quot;&gt;
+              &lt;img
+                src=&quot;data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;140&#x27; height=&#x27;48&#x27; viewBox=&#x27;0 0 140 48&#x27;&gt;&lt;rect width=&#x27;140&#x27; height=&#x27;48&#x27; rx=&#x27;6&#x27; fill=&#x27;%23000&#x27;/&gt;&lt;text x=&#x27;12&#x27; y=&#x27;20&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;9&#x27; fill=&#x27;%23fff&#x27;&gt;Disponible sur&lt;/text&gt;&lt;text x=&#x27;12&#x27; y=&#x27;36&#x27; font-family=&#x27;Arial,Helvetica,sans-serif&#x27; font-size=&#x27;14&#x27; font-weight=&#x27;700&#x27; fill=&#x27;%23fff&#x27;&gt;Google Play&lt;/text&gt;&lt;/svg&gt;&quot;
+                alt=&quot;Disponible sur Google Play&quot;
+                width=&quot;140&quot;
+                height=&quot;48&quot;
+                style=&quot;display:block; width:140px; height:48px; border:0; outline:none;&quot;
+              /&gt;
+            &lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 07 — CTA double App Store + Google Play
+  =============================================
+  Usage : Promote app — 2 boutons juxtaposés avec deep links et badges officiels.
+  Tokens : {{APP_STORE_URL}}, {{GOOGLE_PLAY_URL}},
+           {{APP_STORE_BADGE_URL}} (badge officiel localisé),
+           {{GOOGLE_PLAY_BADGE_URL}} (badge officiel localisé)
+  Conformité : badges officiels Apple/Google (versions localisées obligatoires),
+               deep links Universal Link iOS + App Link Android,
+               UTM standardisés dans les URLs, taille ≥44px tactile
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot; class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px 32px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; align=&quot;center&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- App Store --&gt;
+          &lt;td align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;padding: 0 8px 0 0;&quot;&gt;
+            &lt;a href=&quot;{{APP_STORE_URL}}&quot; target=&quot;_blank&quot; title=&quot;Télécharger sur l&#x27;App Store&quot; style=&quot;text-decoration:none; border:0; outline:0;&quot;&gt;
+              &lt;img
+                src=&quot;{{APP_STORE_BADGE_URL}}&quot;
+                alt=&quot;Télécharger sur l&#x27;App Store&quot;
+                width=&quot;140&quot;
+                height=&quot;48&quot;
+                style=&quot;display:block; width:140px; height:48px; border:0; outline:none;&quot;
+              /&gt;
+            &lt;/a&gt;
+          &lt;/td&gt;
+          &lt;!-- Google Play --&gt;
+          &lt;td align=&quot;center&quot; valign=&quot;middle&quot; style=&quot;padding: 0 0 0 8px;&quot;&gt;
+            &lt;a href=&quot;{{GOOGLE_PLAY_URL}}&quot; target=&quot;_blank&quot; title=&quot;Disponible sur Google Play&quot; style=&quot;text-decoration:none; border:0; outline:0;&quot;&gt;
+              &lt;img
+                src=&quot;{{GOOGLE_PLAY_BADGE_URL}}&quot;
+                alt=&quot;Disponible sur Google Play&quot;
+                width=&quot;140&quot;
+                height=&quot;48&quot;
+                style=&quot;display:block; width:140px; height:48px; border:0; outline:none;&quot;
+              /&gt;
+            &lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-08_body_1col">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">08</span>Body 1 colonne</h2>
+      <p class="desc">Paragraphe texte. 1 idée. Empilable.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>BODY_TEXT}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 08 — Body 1 colonne (paragraphe)
+  ======================================
+  Usage : texte simple, 1 idée. Plusieurs blocs 08 empilables si plusieurs idées.
+  Tokens : Bonjour, vous venez de créer votre compte Geopost. Nous sommes prêts à vous aider à envoyer ou suivre vos colis. Voici les &lt;strong&gt;3 actions clés&lt;/strong&gt; à effectuer dans les prochaines minutes. (peut contenir des &lt;strong&gt;, &lt;em&gt;, &lt;a&gt;)
+  Contrainte : phrases ≤20 mots, 1 idée par bloc, ≤120 mots par bloc
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 0 32px 16px 32px;&quot;&gt;
+      &lt;p class=&quot;text-dark&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.6; color: #1a1a1a;&quot;&gt;
+        Bonjour, vous venez de créer votre compte Geopost. Nous sommes prêts à vous aider à envoyer ou suivre vos colis. Voici les &lt;strong&gt;3 actions clés&lt;/strong&gt; à effectuer dans les prochaines minutes.
+      &lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 08 — Body 1 colonne (paragraphe)
+  ======================================
+  Usage : texte simple, 1 idée. Plusieurs blocs 08 empilables si plusieurs idées.
+  Tokens : {{BODY_TEXT}} (peut contenir des &lt;strong&gt;, &lt;em&gt;, &lt;a&gt;)
+  Contrainte : phrases ≤20 mots, 1 idée par bloc, ≤120 mots par bloc
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 0 32px 16px 32px;&quot;&gt;
+      &lt;p class=&quot;text-dark&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.6; color: #1a1a1a;&quot;&gt;
+        {{BODY_TEXT}}
+      &lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-09_body_3cards">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">09</span>Body 3 cards horizontales</h2>
+      <p class="desc">3 bénéfices côte à côte. Stack vertical mobile.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>CARD_1_*}}</code><br><code>{{<wbr>CARD_2_*}}</code><br><code>{{<wbr>CARD_3_*}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 09 — Body 3 cards horizontales
+  ====================================
+  Usage : 3 bénéfices côte à côte (Promote app, Welcome). Stack vertical sur mobile.
+  Tokens : 📍, Tracking temps réel, Suivez vos colis à la minute près, où qu&#x27;ils soient.
+           idem _2, _3
+  Conformité : table-based stack mobile via class .stack, alts vides sur icônes
+               décoratives, 1 phrase max par card
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- Card 1 --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 12px 8px;&quot;&gt;
+            &lt;div style=&quot;font-size:32px; line-height:1; margin-bottom: 8px;&quot; role=&quot;img&quot; aria-label=&quot;&quot;&gt;📍&lt;/div&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              Tracking temps réel
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              Suivez vos colis à la minute près, où qu&#x27;ils soient.
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Card 2 --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 12px 8px;&quot;&gt;
+            &lt;div style=&quot;font-size:32px; line-height:1; margin-bottom: 8px;&quot; role=&quot;img&quot; aria-label=&quot;&quot;&gt;🔔&lt;/div&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              Notifications push
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              Avertissement à chaque étape, sans email parasite.
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Card 3 --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 12px 8px;&quot;&gt;
+            &lt;div style=&quot;font-size:32px; line-height:1; margin-bottom: 8px;&quot; role=&quot;img&quot; aria-label=&quot;&quot;&gt;⚙️&lt;/div&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              Modifier en 1 tap
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              Reporter, dévier, choisir un point relais — instantané.
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 09 — Body 3 cards horizontales
+  ====================================
+  Usage : 3 bénéfices côte à côte (Promote app, Welcome). Stack vertical sur mobile.
+  Tokens : {{CARD_1_ICON}}, {{CARD_1_TITLE}}, {{CARD_1_TEXT}}
+           idem _2, _3
+  Conformité : table-based stack mobile via class .stack, alts vides sur icônes
+               décoratives, 1 phrase max par card
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- Card 1 --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 12px 8px;&quot;&gt;
+            &lt;div style=&quot;font-size:32px; line-height:1; margin-bottom: 8px;&quot; role=&quot;img&quot; aria-label=&quot;&quot;&gt;{{CARD_1_ICON}}&lt;/div&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              {{CARD_1_TITLE}}
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              {{CARD_1_TEXT}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Card 2 --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 12px 8px;&quot;&gt;
+            &lt;div style=&quot;font-size:32px; line-height:1; margin-bottom: 8px;&quot; role=&quot;img&quot; aria-label=&quot;&quot;&gt;{{CARD_2_ICON}}&lt;/div&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              {{CARD_2_TITLE}}
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              {{CARD_2_TEXT}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Card 3 --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 12px 8px;&quot;&gt;
+            &lt;div style=&quot;font-size:32px; line-height:1; margin-bottom: 8px;&quot; role=&quot;img&quot; aria-label=&quot;&quot;&gt;{{CARD_3_ICON}}&lt;/div&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              {{CARD_3_TITLE}}
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              {{CARD_3_TEXT}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-10_body_3steps">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">10</span>Body 3 étapes verticales</h2>
+      <p class="desc">Onboarding, mode d'emploi. Numérotation typo (pas image).</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>STEP_1_*}}</code><br><code>{{<wbr>STEP_2_*}}</code><br><code>{{<wbr>STEP_3_*}}</code><br><code>{{<wbr>COLOR_PRIMARY}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 10 — Body 3 étapes verticales numérotées
+  ==============================================
+  Usage : mode d&#x27;emploi, onboarding (Welcome ③ étapes). Stack toujours vertical.
+  Tokens : Confirmer votre adresse, Vérifiez vos coordonnées postales pour des livraisons sans erreur., {{STEP_1_URL}} (optionnel)
+           idem _2, _3
+           #DC0032 (numéro badge)
+  Conformité : numérotation typo (pas image), ordre de lecture cohérent,
+               liens explicites, contraste numéro ≥4.5:1
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+
+      &lt;!-- Step 1 --&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin-bottom: 16px;&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;40&quot; style=&quot;width:40px; padding-right: 16px;&quot;&gt;
+            &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+              &lt;tr&gt;
+                &lt;td align=&quot;center&quot; valign=&quot;middle&quot; width=&quot;32&quot; height=&quot;32&quot; bgcolor=&quot;#DC0032&quot; style=&quot;background:#DC0032; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;&quot;&gt;
+                  1
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;&quot;&gt;
+              Confirmer votre adresse
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              Vérifiez vos coordonnées postales pour des livraisons sans erreur.
+              &lt;!-- Lien optionnel : &lt;a href=&quot;{{STEP_1_URL}}&quot; style=&quot;color:#DC0032;&quot;&gt;Voir →&lt;/a&gt; --&gt;
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+
+      &lt;!-- Step 2 --&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin-bottom: 16px;&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;40&quot; style=&quot;width:40px; padding-right: 16px;&quot;&gt;
+            &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+              &lt;tr&gt;
+                &lt;td align=&quot;center&quot; valign=&quot;middle&quot; width=&quot;32&quot; height=&quot;32&quot; bgcolor=&quot;#DC0032&quot; style=&quot;background:#DC0032; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;&quot;&gt;
+                  2
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;&quot;&gt;
+              Télécharger l&#x27;application
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              Tracking temps réel et notifications push depuis votre mobile.
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+
+      &lt;!-- Step 3 --&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;40&quot; style=&quot;width:40px; padding-right: 16px;&quot;&gt;
+            &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+              &lt;tr&gt;
+                &lt;td align=&quot;center&quot; valign=&quot;middle&quot; width=&quot;32&quot; height=&quot;32&quot; bgcolor=&quot;#DC0032&quot; style=&quot;background:#DC0032; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;&quot;&gt;
+                  3
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;&quot;&gt;
+              Envoyer ou recevoir un colis
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              Vous êtes prêt. Lancez votre premier envoi en moins de 3 minutes.
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 10 — Body 3 étapes verticales numérotées
+  ==============================================
+  Usage : mode d&#x27;emploi, onboarding (Welcome ③ étapes). Stack toujours vertical.
+  Tokens : {{STEP_1_TITLE}}, {{STEP_1_TEXT}}, {{STEP_1_URL}} (optionnel)
+           idem _2, _3
+           {{COLOR_PRIMARY}} (numéro badge)
+  Conformité : numérotation typo (pas image), ordre de lecture cohérent,
+               liens explicites, contraste numéro ≥4.5:1
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+
+      &lt;!-- Step 1 --&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin-bottom: 16px;&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;40&quot; style=&quot;width:40px; padding-right: 16px;&quot;&gt;
+            &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+              &lt;tr&gt;
+                &lt;td align=&quot;center&quot; valign=&quot;middle&quot; width=&quot;32&quot; height=&quot;32&quot; bgcolor=&quot;{{COLOR_PRIMARY}}&quot; style=&quot;background:{{COLOR_PRIMARY}}; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;&quot;&gt;
+                  1
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;&quot;&gt;
+              {{STEP_1_TITLE}}
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              {{STEP_1_TEXT}}
+              &lt;!-- Lien optionnel : &lt;a href=&quot;{{STEP_1_URL}}&quot; style=&quot;color:{{COLOR_PRIMARY}};&quot;&gt;Voir →&lt;/a&gt; --&gt;
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+
+      &lt;!-- Step 2 --&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;margin-bottom: 16px;&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;40&quot; style=&quot;width:40px; padding-right: 16px;&quot;&gt;
+            &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+              &lt;tr&gt;
+                &lt;td align=&quot;center&quot; valign=&quot;middle&quot; width=&quot;32&quot; height=&quot;32&quot; bgcolor=&quot;{{COLOR_PRIMARY}}&quot; style=&quot;background:{{COLOR_PRIMARY}}; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;&quot;&gt;
+                  2
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;&quot;&gt;
+              {{STEP_2_TITLE}}
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              {{STEP_2_TEXT}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+
+      &lt;!-- Step 3 --&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;40&quot; style=&quot;width:40px; padding-right: 16px;&quot;&gt;
+            &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+              &lt;tr&gt;
+                &lt;td align=&quot;center&quot; valign=&quot;middle&quot; width=&quot;32&quot; height=&quot;32&quot; bgcolor=&quot;{{COLOR_PRIMARY}}&quot; style=&quot;background:{{COLOR_PRIMARY}}; width:32px; height:32px; border-radius:16px; color:#ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; line-height: 32px;&quot;&gt;
+                  3
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/table&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3;&quot;&gt;
+              {{STEP_3_TITLE}}
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              {{STEP_3_TEXT}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-11_image_text_right">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">11</span>Image + texte (responsive stack)</h2>
+      <p class="desc">Bloc service / nouveauté. Image gauche, texte droite, stack mobile.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>IMAGE_URL}}</code><br><code>{{<wbr>IMAGE_ALT}}</code><br><code>{{<wbr>SUBTITLE}}</code><br><code>{{<wbr>TITLE}}</code><br><code>{{<wbr>TEXT}}</code><br><code>{{<wbr>LINK_URL}}</code><br><code>{{<wbr>LINK_LABEL}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 11 — Image gauche + texte droite (responsive stack)
+  =========================================================
+  Usage : bloc service / nouveauté avec visuel.
+  Tokens : data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;260&#x27; height=&#x27;180&#x27; viewBox=&#x27;0 0 260 180&#x27;&gt;&lt;rect width=&#x27;260&#x27; height=&#x27;180&#x27; fill=&#x27;%23f5f5f4&#x27;/&gt;&lt;rect x=&#x27;80&#x27; y=&#x27;40&#x27; width=&#x27;100&#x27; height=&#x27;100&#x27; fill=&#x27;%23DC0032&#x27; opacity=&#x27;0.2&#x27; rx=&#x27;8&#x27;/&gt;&lt;text x=&#x27;130&#x27; y=&#x27;100&#x27; text-anchor=&#x27;middle&#x27; font-family=&#x27;Arial&#x27; font-size=&#x27;12&#x27; fill=&#x27;%23666&#x27;&gt;Service visuel&lt;/text&gt;&lt;/svg&gt;, Service Point Relais, 260 (défaut 260),
+           Nouveau service (eyebrow), Le point relais qui vous arrange., 5 000 points relais Geopost partout en France. Le plus proche est peut-être à 3 minutes.,
+           https://geopost.com/points-relais, Trouver mon point relais, #DC0032
+  Conformité : stack vertical mobile, alt requis, lien explicite,
+               taille image mobile fluide
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- Image --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;middle&quot; width=&quot;260&quot; style=&quot;width:260px; padding-right: 24px;&quot;&gt;
+            &lt;img
+              src=&quot;data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;260&#x27; height=&#x27;180&#x27; viewBox=&#x27;0 0 260 180&#x27;&gt;&lt;rect width=&#x27;260&#x27; height=&#x27;180&#x27; fill=&#x27;%23f5f5f4&#x27;/&gt;&lt;rect x=&#x27;80&#x27; y=&#x27;40&#x27; width=&#x27;100&#x27; height=&#x27;100&#x27; fill=&#x27;%23DC0032&#x27; opacity=&#x27;0.2&#x27; rx=&#x27;8&#x27;/&gt;&lt;text x=&#x27;130&#x27; y=&#x27;100&#x27; text-anchor=&#x27;middle&#x27; font-family=&#x27;Arial&#x27; font-size=&#x27;12&#x27; fill=&#x27;%23666&#x27;&gt;Service visuel&lt;/text&gt;&lt;/svg&gt;&quot;
+              alt=&quot;Service Point Relais&quot;
+              width=&quot;260&quot;
+              height=&quot;auto&quot;
+              style=&quot;display:block; width:100%; max-width:260px; height:auto; border:0; outline:none; border-radius:6px;&quot;
+            /&gt;
+          &lt;/td&gt;
+          &lt;!-- Texte --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;middle&quot;&gt;
+            &lt;p style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #DC0032;&quot;&gt;
+              Nouveau service
+            &lt;/p&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; line-height: 1.25; color: #1a1a1a;&quot;&gt;
+              Le point relais qui vous arrange.
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              5 000 points relais Geopost partout en France. Le plus proche est peut-être à 3 minutes.
+            &lt;/p&gt;
+            &lt;a href=&quot;https://geopost.com/points-relais&quot; target=&quot;_blank&quot; style=&quot;font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: #DC0032; text-decoration: underline;&quot;&gt;
+              Trouver mon point relais →
+            &lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 11 — Image gauche + texte droite (responsive stack)
+  =========================================================
+  Usage : bloc service / nouveauté avec visuel.
+  Tokens : {{IMAGE_URL}}, {{IMAGE_ALT}}, {{IMAGE_WIDTH}} (défaut 260),
+           {{SUBTITLE}} (eyebrow), {{TITLE}}, {{TEXT}},
+           {{LINK_URL}}, {{LINK_LABEL}}, {{COLOR_PRIMARY}}
+  Conformité : stack vertical mobile, alt requis, lien explicite,
+               taille image mobile fluide
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- Image --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;middle&quot; width=&quot;260&quot; style=&quot;width:260px; padding-right: 24px;&quot;&gt;
+            &lt;img
+              src=&quot;{{IMAGE_URL}}&quot;
+              alt=&quot;{{IMAGE_ALT}}&quot;
+              width=&quot;{{IMAGE_WIDTH}}&quot;
+              height=&quot;auto&quot;
+              style=&quot;display:block; width:100%; max-width:{{IMAGE_WIDTH}}px; height:auto; border:0; outline:none; border-radius:6px;&quot;
+            /&gt;
+          &lt;/td&gt;
+          &lt;!-- Texte --&gt;
+          &lt;td class=&quot;stack&quot; valign=&quot;middle&quot;&gt;
+            &lt;p style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{COLOR_PRIMARY}};&quot;&gt;
+              {{SUBTITLE}}
+            &lt;/p&gt;
+            &lt;h3 class=&quot;text-dark&quot; style=&quot;margin:0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; line-height: 1.25; color: #1a1a1a;&quot;&gt;
+              {{TITLE}}
+            &lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.5; color: #4a4a4a;&quot;&gt;
+              {{TEXT}}
+            &lt;/p&gt;
+            &lt;a href=&quot;{{LINK_URL}}&quot; target=&quot;_blank&quot; style=&quot;font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: {{COLOR_PRIMARY}}; text-decoration: underline;&quot;&gt;
+              {{LINK_LABEL}} →
+            &lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-12_banner_promo">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">12</span>Bannière promo (code)</h2>
+      <p class="desc">Boost sales variante prix. Code, date, conditions visibles.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>PROMO_HEADLINE}}</code><br><code>{{<wbr>PROMO_CODE}}</code><br><code>{{<wbr>PROMO_EXPIRES}}</code><br><code>{{<wbr>PROMO_CONDITIONS_URL}}</code><br><code>{{<wbr>COLOR_PRIMARY}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 12 — Bannière promo (code)
+  ================================
+  Usage : Boost sales variante prix — code promo affiché lisiblement avec
+          date d&#x27;expiration et conditions.
+  Tokens : -20% sur votre prochain envoi (ex. &quot;-20% sur votre prochain envoi&quot;),
+           BOOST20, 31 août 2026 (ex. &quot;31 août 2026&quot;),
+           https://geopost.com/conditions-promo, #DC0032
+  Conformité : contraste texte sur bgcolor ≥4.5:1 (vérifier selon #DC0032),
+               conditions accessibles via lien, pas de FOMO countdown animé
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; bgcolor=&quot;#DC0032&quot; style=&quot;background:#DC0032; border-radius:8px;&quot;&gt;
+        &lt;tr&gt;
+          &lt;td align=&quot;center&quot; style=&quot;padding: 24px 16px;&quot;&gt;
+            &lt;p style=&quot;margin:0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; color: #ffffff; line-height: 1.3;&quot;&gt;
+              -20% sur votre prochain envoi
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 12px 0; font-family: &#x27;Courier New&#x27;, Courier, monospace; font-size: 28px; font-weight: 800; letter-spacing: 4px; color: #ffffff; line-height: 1; padding: 12px 24px; background: rgba(0,0,0,0.18); border-radius: 4px; display: inline-block;&quot;&gt;
+              BOOST20
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #ffffff; opacity: 0.9;&quot;&gt;
+              Valable jusqu&#x27;au 31 août 2026
+            &lt;/p&gt;
+            &lt;a href=&quot;https://geopost.com/conditions-promo&quot; target=&quot;_blank&quot; style=&quot;font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #ffffff; text-decoration: underline; opacity: 0.85;&quot;&gt;
+              Voir les conditions
+            &lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 12 — Bannière promo (code)
+  ================================
+  Usage : Boost sales variante prix — code promo affiché lisiblement avec
+          date d&#x27;expiration et conditions.
+  Tokens : {{PROMO_HEADLINE}} (ex. &quot;-20% sur votre prochain envoi&quot;),
+           {{PROMO_CODE}}, {{PROMO_EXPIRES}} (ex. &quot;31 août 2026&quot;),
+           {{PROMO_CONDITIONS_URL}}, {{COLOR_PRIMARY}}
+  Conformité : contraste texte sur bgcolor ≥4.5:1 (vérifier selon {{COLOR_PRIMARY}}),
+               conditions accessibles via lien, pas de FOMO countdown animé
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; bgcolor=&quot;{{COLOR_PRIMARY}}&quot; style=&quot;background:{{COLOR_PRIMARY}}; border-radius:8px;&quot;&gt;
+        &lt;tr&gt;
+          &lt;td align=&quot;center&quot; style=&quot;padding: 24px 16px;&quot;&gt;
+            &lt;p style=&quot;margin:0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; color: #ffffff; line-height: 1.3;&quot;&gt;
+              {{PROMO_HEADLINE}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 12px 0; font-family: &#x27;Courier New&#x27;, Courier, monospace; font-size: 28px; font-weight: 800; letter-spacing: 4px; color: #ffffff; line-height: 1; padding: 12px 24px; background: rgba(0,0,0,0.18); border-radius: 4px; display: inline-block;&quot;&gt;
+              {{PROMO_CODE}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #ffffff; opacity: 0.9;&quot;&gt;
+              Valable jusqu&#x27;au {{PROMO_EXPIRES}}
+            &lt;/p&gt;
+            &lt;a href=&quot;{{PROMO_CONDITIONS_URL}}&quot; target=&quot;_blank&quot; style=&quot;font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #ffffff; text-decoration: underline; opacity: 0.85;&quot;&gt;
+              Voir les conditions
+            &lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-13_metric_data">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">13</span>Data metric (B2B Singular)</h2>
+      <p class="desc">3 chiffres + variation. Pas d'info via couleur seule.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>METRIC_1_*}}</code><br><code>{{<wbr>METRIC_2_*}}</code><br><code>{{<wbr>METRIC_3_*}}</code><br><code>{{<wbr>COLOR_POSITIVE}}</code><br><code>{{<wbr>COLOR_NEGATIVE}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 13 — Data metric (B2B Singular)
+  =====================================
+  Usage : Singular email B2B — chiffres business, variation vs période précédente.
+  Tokens : 1 247, Colis envoyés, +12% vs nov. (ex. &quot;+12%&quot;),
+           true (true/false → couleur verte/rouge),
+           idem _2, _3
+           #16a34a (vert, défaut #16a34a),
+           #dc2626 (rouge, défaut #dc2626)
+  Conformité : pas d&#x27;info via couleur seule (signe +/- présent), contraste AA,
+               table-based pour Outlook, stack mobile
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;border:1px solid #e5e5e5; border-radius:8px;&quot; class=&quot;border-light&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- Metric 1 --&gt;
+          &lt;td class=&quot;stack&quot; align=&quot;center&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 24px 12px; border-right: 1px solid #e5e5e5;&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; color: #1a1a1a; line-height: 1;&quot;&gt;
+              1 247
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #6b7280;&quot;&gt;
+              Colis envoyés
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #16a34a;&quot;&gt;
+              +12% vs nov.
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Metric 2 --&gt;
+          &lt;td class=&quot;stack&quot; align=&quot;center&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 24px 12px; border-right: 1px solid #e5e5e5;&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; color: #1a1a1a; line-height: 1;&quot;&gt;
+              98,3%
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #6b7280;&quot;&gt;
+              Livraisons à temps
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #16a34a;&quot;&gt;
+              +0,8 pts
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Metric 3 --&gt;
+          &lt;td class=&quot;stack&quot; align=&quot;center&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 24px 12px;&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; color: #1a1a1a; line-height: 1;&quot;&gt;
+              3,2j
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #6b7280;&quot;&gt;
+              Délai moyen
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #dc2626;&quot;&gt;
+              -0,3j vs nov.
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 13 — Data metric (B2B Singular)
+  =====================================
+  Usage : Singular email B2B — chiffres business, variation vs période précédente.
+  Tokens : {{METRIC_1_VALUE}}, {{METRIC_1_LABEL}}, {{METRIC_1_DELTA}} (ex. &quot;+12%&quot;),
+           {{METRIC_1_DELTA_POSITIVE}} (true/false → couleur verte/rouge),
+           idem _2, _3
+           {{COLOR_POSITIVE}} (vert, défaut #16a34a),
+           {{COLOR_NEGATIVE}} (rouge, défaut #dc2626)
+  Conformité : pas d&#x27;info via couleur seule (signe +/- présent), contraste AA,
+               table-based pour Outlook, stack mobile
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 8px 32px 16px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;border:1px solid #e5e5e5; border-radius:8px;&quot; class=&quot;border-light&quot;&gt;
+        &lt;tr&gt;
+          &lt;!-- Metric 1 --&gt;
+          &lt;td class=&quot;stack&quot; align=&quot;center&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 24px 12px; border-right: 1px solid #e5e5e5;&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; color: #1a1a1a; line-height: 1;&quot;&gt;
+              {{METRIC_1_VALUE}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #6b7280;&quot;&gt;
+              {{METRIC_1_LABEL}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: {{COLOR_POSITIVE}};&quot;&gt;
+              {{METRIC_1_DELTA}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Metric 2 --&gt;
+          &lt;td class=&quot;stack&quot; align=&quot;center&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 24px 12px; border-right: 1px solid #e5e5e5;&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; color: #1a1a1a; line-height: 1;&quot;&gt;
+              {{METRIC_2_VALUE}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #6b7280;&quot;&gt;
+              {{METRIC_2_LABEL}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: {{COLOR_POSITIVE}};&quot;&gt;
+              {{METRIC_2_DELTA}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+          &lt;!-- Metric 3 --&gt;
+          &lt;td class=&quot;stack&quot; align=&quot;center&quot; valign=&quot;top&quot; width=&quot;33%&quot; style=&quot;width:33%; padding: 24px 12px;&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; color: #1a1a1a; line-height: 1;&quot;&gt;
+              {{METRIC_3_VALUE}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #6b7280;&quot;&gt;
+              {{METRIC_3_LABEL}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: {{COLOR_NEGATIVE}};&quot;&gt;
+              {{METRIC_3_DELTA}}
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-14_signature_am">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">14</span>Signature manuelle AM (B2B)</h2>
+      <p class="desc">Singular only. Photo + nom + rôle + tel + email.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>AM_PHOTO_URL}}</code><br><code>{{<wbr>AM_NAME}}</code><br><code>{{<wbr>AM_ROLE}}</code><br><code>{{<wbr>AM_PHONE}}</code><br><code>{{<wbr>AM_EMAIL}}</code><br><code>{{<wbr>BU_NAME}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 14 — Signature manuelle Account Manager (B2B Singular)
+  ============================================================
+  Usage : Singular emails B2B uniquement. Signature personnalisée
+          avec photo (option), nom, rôle, téléphone direct, mailto.
+  Tokens : data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;80&#x27; height=&#x27;80&#x27; viewBox=&#x27;0 0 80 80&#x27;&gt;&lt;circle cx=&#x27;40&#x27; cy=&#x27;40&#x27; r=&#x27;40&#x27; fill=&#x27;%23f5f5f4&#x27;/&gt;&lt;circle cx=&#x27;40&#x27; cy=&#x27;32&#x27; r=&#x27;14&#x27; fill=&#x27;%23ccc&#x27;/&gt;&lt;path d=&#x27;M16 72 Q40 56 64 72 L64 80 L16 80 Z&#x27; fill=&#x27;%23ccc&#x27;/&gt;&lt;/svg&gt; (optionnel — laisser vide si pas de photo),
+           Marie Dupont, Account Manager Singular, +33 1 23 45 67 89, marie.dupont@geopost.com,
+           Geopost France
+  Conformité : photo cropped 80×80, alt avec nom AM, mailto cliquable,
+               téléphone format tel: pour mobile, contraste AA
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 24px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;border-top: 1px solid #e5e5e5; padding-top: 24px;&quot; class=&quot;border-light&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;80&quot; style=&quot;width:80px; padding-right: 16px;&quot;&gt;
+            &lt;img
+              src=&quot;data:image/svg+xml;utf8,&lt;svg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;80&#x27; height=&#x27;80&#x27; viewBox=&#x27;0 0 80 80&#x27;&gt;&lt;circle cx=&#x27;40&#x27; cy=&#x27;40&#x27; r=&#x27;40&#x27; fill=&#x27;%23f5f5f4&#x27;/&gt;&lt;circle cx=&#x27;40&#x27; cy=&#x27;32&#x27; r=&#x27;14&#x27; fill=&#x27;%23ccc&#x27;/&gt;&lt;path d=&#x27;M16 72 Q40 56 64 72 L64 80 L16 80 Z&#x27; fill=&#x27;%23ccc&#x27;/&gt;&lt;/svg&gt;&quot;
+              alt=&quot;Marie Dupont&quot;
+              width=&quot;80&quot;
+              height=&quot;80&quot;
+              style=&quot;display:block; width:80px; height:80px; border:0; outline:none; border-radius:40px;&quot;
+            /&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 2px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              Marie Dupont
+            &lt;/p&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #6b7280;&quot;&gt;
+              Account Manager Singular · Geopost France
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #1a1a1a;&quot;&gt;
+              &lt;a href=&quot;tel:+33 1 23 45 67 89&quot; style=&quot;color: #1a1a1a; text-decoration: none;&quot;&gt;+33 1 23 45 67 89&lt;/a&gt;
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px;&quot;&gt;
+              &lt;a href=&quot;mailto:marie.dupont@geopost.com&quot; style=&quot;color: #1a1a1a; text-decoration: underline;&quot;&gt;marie.dupont@geopost.com&lt;/a&gt;
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 14 — Signature manuelle Account Manager (B2B Singular)
+  ============================================================
+  Usage : Singular emails B2B uniquement. Signature personnalisée
+          avec photo (option), nom, rôle, téléphone direct, mailto.
+  Tokens : {{AM_PHOTO_URL}} (optionnel — laisser vide si pas de photo),
+           {{AM_NAME}}, {{AM_ROLE}}, {{AM_PHONE}}, {{AM_EMAIL}},
+           {{BU_NAME}}
+  Conformité : photo cropped 80×80, alt avec nom AM, mailto cliquable,
+               téléphone format tel: pour mobile, contraste AA
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 24px 32px;&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;border-top: 1px solid #e5e5e5; padding-top: 24px;&quot; class=&quot;border-light&quot;&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot; width=&quot;80&quot; style=&quot;width:80px; padding-right: 16px;&quot;&gt;
+            &lt;img
+              src=&quot;{{AM_PHOTO_URL}}&quot;
+              alt=&quot;{{AM_NAME}}&quot;
+              width=&quot;80&quot;
+              height=&quot;80&quot;
+              style=&quot;display:block; width:80px; height:80px; border:0; outline:none; border-radius:40px;&quot;
+            /&gt;
+          &lt;/td&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;p class=&quot;text-dark&quot; style=&quot;margin:0 0 2px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a;&quot;&gt;
+              {{AM_NAME}}
+            &lt;/p&gt;
+            &lt;p class=&quot;text-muted&quot; style=&quot;margin:0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #6b7280;&quot;&gt;
+              {{AM_ROLE}} · {{BU_NAME}}
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #1a1a1a;&quot;&gt;
+              &lt;a href=&quot;tel:{{AM_PHONE}}&quot; style=&quot;color: #1a1a1a; text-decoration: none;&quot;&gt;{{AM_PHONE}}&lt;/a&gt;
+            &lt;/p&gt;
+            &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 13px;&quot;&gt;
+              &lt;a href=&quot;mailto:{{AM_EMAIL}}&quot; style=&quot;color: #1a1a1a; text-decoration: underline;&quot;&gt;{{AM_EMAIL}}&lt;/a&gt;
+            &lt;/p&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-15_footer_legal">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">15</span>Footer légal RGPD</h2>
+      <p class="desc">Adresse + RGPD + désabonnement + DPO. Pays-spécifique.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>BU_NAME}}</code><br><code>{{<wbr>LEGAL_ADDRESS}}</code><br><code>{{<wbr>LEGAL_RGPD_TEXT}}</code><br><code>{{<wbr>UNSUB_URL}}</code><br><code>{{<wbr>PREFS_URL}}</code><br><code>{{<wbr>CONTACT_DPO_EMAIL}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 15 — Footer légal RGPD complet
+  ====================================
+  Usage : footer à la fin de TOUT email Geopost. Conforme RGPD pays-spécifique.
+  Tokens : Geopost France, 26 rue des Bons Enfants, 92500 Rueil-Malmaison, France, En application du Règlement Général sur la Protection des Données (RGPD) et de la loi Informatique et Libertés du 6 janvier 1978 modifiée, vos données personnelles sont traitées par Geopost dans le cadre de la relation client.,
+           https://geopost.com/unsub?token=preview, https://geopost.com/preferences?token=preview, dpo@geopost.com,
+           https://geopost.com/mentions-legales, https://geopost.com/confidentialite,
+           {{SOCIAL_FB_URL}}, {{SOCIAL_LI_URL}} (optionnels)
+  Conformité : adresse postale BU complète, lien désabonnement actif et 1-clic,
+               mention RGPD pays, contact DPO, contraste AA même en small print
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; bgcolor=&quot;#2e2e2f&quot; style=&quot;background:#2e2e2f;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 32px;&quot;&gt;
+      &lt;!-- Désabonnement en premier (visibilité) --&gt;
+      &lt;p style=&quot;margin:0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #ffffff; text-align:center;&quot;&gt;
+        &lt;a href=&quot;https://geopost.com/unsub?token=preview&quot; target=&quot;_blank&quot; style=&quot;color: #ffffff; text-decoration: underline;&quot;&gt;Se désabonner&lt;/a&gt;
+        &amp;nbsp;·&amp;nbsp;
+        &lt;a href=&quot;https://geopost.com/preferences?token=preview&quot; target=&quot;_blank&quot; style=&quot;color: #ffffff; text-decoration: underline;&quot;&gt;Préférences emails&lt;/a&gt;
+      &lt;/p&gt;
+
+      &lt;!-- Adresse postale --&gt;
+      &lt;p style=&quot;margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5; color: #d4d4d4; text-align:center;&quot;&gt;
+        &lt;strong&gt;Geopost France&lt;/strong&gt;&lt;br/&gt;
+        26 rue des Bons Enfants, 92500 Rueil-Malmaison, France
+      &lt;/p&gt;
+
+      &lt;!-- Mention RGPD pays-spécifique --&gt;
+      &lt;p style=&quot;margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height: 1.5; color: #a1a1aa; text-align:left;&quot;&gt;
+        En application du Règlement Général sur la Protection des Données (RGPD) et de la loi Informatique et Libertés du 6 janvier 1978 modifiée, vos données personnelles sont traitées par Geopost dans le cadre de la relation client.
+        Vous pouvez exercer vos droits (accès, rectification, opposition, limitation, portabilité, effacement) en écrivant à
+        &lt;a href=&quot;mailto:dpo@geopost.com&quot; style=&quot;color: #d4d4d4; text-decoration: underline;&quot;&gt;dpo@geopost.com&lt;/a&gt;
+        ou par courrier à l&#x27;adresse ci-dessus.
+      &lt;/p&gt;
+
+      &lt;!-- Liens légaux --&gt;
+      &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #a1a1aa; text-align:center;&quot;&gt;
+        &lt;a href=&quot;https://geopost.com/mentions-legales&quot; target=&quot;_blank&quot; style=&quot;color: #a1a1aa; text-decoration: underline;&quot;&gt;Mentions légales&lt;/a&gt;
+        &amp;nbsp;·&amp;nbsp;
+        &lt;a href=&quot;https://geopost.com/confidentialite&quot; target=&quot;_blank&quot; style=&quot;color: #a1a1aa; text-decoration: underline;&quot;&gt;Politique de confidentialité&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 15 — Footer légal RGPD complet
+  ====================================
+  Usage : footer à la fin de TOUT email Geopost. Conforme RGPD pays-spécifique.
+  Tokens : {{BU_NAME}}, {{LEGAL_ADDRESS}}, {{LEGAL_RGPD_TEXT}},
+           {{UNSUB_URL}}, {{PREFS_URL}}, {{CONTACT_DPO_EMAIL}},
+           {{LINK_LEGAL_NOTICE_URL}}, {{LINK_PRIVACY_URL}},
+           {{SOCIAL_FB_URL}}, {{SOCIAL_LI_URL}} (optionnels)
+  Conformité : adresse postale BU complète, lien désabonnement actif et 1-clic,
+               mention RGPD pays, contact DPO, contraste AA même en small print
+--&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; bgcolor=&quot;#2e2e2f&quot; style=&quot;background:#2e2e2f;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 32px;&quot;&gt;
+      &lt;!-- Désabonnement en premier (visibilité) --&gt;
+      &lt;p style=&quot;margin:0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #ffffff; text-align:center;&quot;&gt;
+        &lt;a href=&quot;{{UNSUB_URL}}&quot; target=&quot;_blank&quot; style=&quot;color: #ffffff; text-decoration: underline;&quot;&gt;Se désabonner&lt;/a&gt;
+        &amp;nbsp;·&amp;nbsp;
+        &lt;a href=&quot;{{PREFS_URL}}&quot; target=&quot;_blank&quot; style=&quot;color: #ffffff; text-decoration: underline;&quot;&gt;Préférences emails&lt;/a&gt;
+      &lt;/p&gt;
+
+      &lt;!-- Adresse postale --&gt;
+      &lt;p style=&quot;margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5; color: #d4d4d4; text-align:center;&quot;&gt;
+        &lt;strong&gt;{{BU_NAME}}&lt;/strong&gt;&lt;br/&gt;
+        {{LEGAL_ADDRESS}}
+      &lt;/p&gt;
+
+      &lt;!-- Mention RGPD pays-spécifique --&gt;
+      &lt;p style=&quot;margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height: 1.5; color: #a1a1aa; text-align:left;&quot;&gt;
+        {{LEGAL_RGPD_TEXT}}
+        Vous pouvez exercer vos droits (accès, rectification, opposition, limitation, portabilité, effacement) en écrivant à
+        &lt;a href=&quot;mailto:{{CONTACT_DPO_EMAIL}}&quot; style=&quot;color: #d4d4d4; text-decoration: underline;&quot;&gt;{{CONTACT_DPO_EMAIL}}&lt;/a&gt;
+        ou par courrier à l&#x27;adresse ci-dessus.
+      &lt;/p&gt;
+
+      &lt;!-- Liens légaux --&gt;
+      &lt;p style=&quot;margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #a1a1aa; text-align:center;&quot;&gt;
+        &lt;a href=&quot;{{LINK_LEGAL_NOTICE_URL}}&quot; target=&quot;_blank&quot; style=&quot;color: #a1a1aa; text-decoration: underline;&quot;&gt;Mentions légales&lt;/a&gt;
+        &amp;nbsp;·&amp;nbsp;
+        &lt;a href=&quot;{{LINK_PRIVACY_URL}}&quot; target=&quot;_blank&quot; style=&quot;color: #a1a1aa; text-decoration: underline;&quot;&gt;Politique de confidentialité&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-16_spacer">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">16</span>Spacer / divider</h2>
+      <p class="desc">Espacement vertical ou ligne. Table-based.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>HEIGHT}}</code><br><code>{{<wbr>DIVIDER}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 16 — Spacer / divider
+  ===========================
+  Usage : espacement vertical entre blocs OU divider visuel.
+  Tokens : 24 (px, défaut 24), false (true → ligne, false → invisible)
+  Conformité : table-based (Outlook), line-height + height + font-size synchros,
+               role=&quot;presentation&quot;
+--&gt;
+
+&lt;!-- Variante SPACER invisible --&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td height=&quot;24&quot; style=&quot;height:24px; line-height:24px; font-size:1px;&quot; aria-hidden=&quot;true&quot;&gt;&amp;nbsp;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- Variante DIVIDER ligne (à utiliser à la place du spacer si false = true) --&gt;
+&lt;!--
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px;&quot; aria-hidden=&quot;true&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;td height=&quot;1&quot; bgcolor=&quot;#e5e5e5&quot; class=&quot;border-light&quot; style=&quot;height:1px; line-height:1px; font-size:1px; background:#e5e5e5;&quot;&gt;&amp;nbsp;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+--&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 16 — Spacer / divider
+  ===========================
+  Usage : espacement vertical entre blocs OU divider visuel.
+  Tokens : {{HEIGHT}} (px, défaut 24), {{DIVIDER}} (true → ligne, false → invisible)
+  Conformité : table-based (Outlook), line-height + height + font-size synchros,
+               role=&quot;presentation&quot;
+--&gt;
+
+&lt;!-- Variante SPACER invisible --&gt;
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td height=&quot;{{HEIGHT}}&quot; style=&quot;height:{{HEIGHT}}px; line-height:{{HEIGHT}}px; font-size:1px;&quot; aria-hidden=&quot;true&quot;&gt;&amp;nbsp;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- Variante DIVIDER ligne (à utiliser à la place du spacer si {{DIVIDER}} = true) --&gt;
+&lt;!--
+&lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; class=&quot;bg-white&quot; style=&quot;background:#ffffff;&quot;&gt;
+  &lt;tr&gt;
+    &lt;td class=&quot;pad-mobile&quot; style=&quot;padding: 16px 32px;&quot; aria-hidden=&quot;true&quot;&gt;
+      &lt;table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+        &lt;tr&gt;
+          &lt;td height=&quot;1&quot; bgcolor=&quot;#e5e5e5&quot; class=&quot;border-light&quot; style=&quot;height:1px; line-height:1px; font-size:1px; background:#e5e5e5;&quot;&gt;&amp;nbsp;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+--&gt;
+</code></pre>
+  </details>
+</section>
+<section class="block-card" id="block-17_tracking_pixel">
+  <div class="block-header">
+    <div class="left">
+      <h2><span class="num">17</span>Tracking pixel</h2>
+      <p class="desc">1×1 transparent en fin d'email pour tracking ouvertures imagino.</p>
+    </div>
+    <div class="tokens">
+      <strong style="color:#1a1a1a;">Tokens :</strong><br><code>{{<wbr>TRACKING_PIXEL_URL}}</code>
+    </div>
+  </div>
+  <div class="block-render">
+    <div class="block-render-inner">
+      <iframe srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;body{margin:0;background:#fff;font-family:Arial,sans-serif;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;!--
+  BLOC 17 — Tracking pixel transparent
+  =====================================
+  Usage : 1x1 px transparent, à insérer en TOUT DERNIER avant &lt;/body&gt;,
+          pour tracker les ouvertures côté imagino.
+  Tokens : data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 (URL absolue imagino)
+  Conformité : alt=&quot;&quot; (image décorative — pas annoncée aux lecteurs d&#x27;écran),
+               URL absolue HTTPS, pas de CID, RGPD-compliant
+--&gt;
+&lt;img src=&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7&quot; alt=&quot;&quot; width=&quot;1&quot; height=&quot;1&quot; style=&quot;display:block; width:1px; height:1px; border:0; outline:none;&quot; /&gt;
+&lt;/body&gt;&lt;/html&gt;" style="width:100%; min-height:300px; border:0; display:block;" loading="lazy" onload="this.style.height = this.contentDocument.body.scrollHeight + 'px';"></iframe>
+    </div>
+  </div>
+  <details class="block-source">
+    <summary>Voir le code HTML source</summary>
+    <pre><code>&lt;!--
+  BLOC 17 — Tracking pixel transparent
+  =====================================
+  Usage : 1x1 px transparent, à insérer en TOUT DERNIER avant &lt;/body&gt;,
+          pour tracker les ouvertures côté imagino.
+  Tokens : {{TRACKING_PIXEL_URL}} (URL absolue imagino)
+  Conformité : alt=&quot;&quot; (image décorative — pas annoncée aux lecteurs d&#x27;écran),
+               URL absolue HTTPS, pas de CID, RGPD-compliant
+--&gt;
+&lt;img src=&quot;{{TRACKING_PIXEL_URL}}&quot; alt=&quot;&quot; width=&quot;1&quot; height=&quot;1&quot; style=&quot;display:block; width:1px; height:1px; border:0; outline:none;&quot; /&gt;
+</code></pre>
+  </details>
+</section>
+
+</div>
+</body>
+</html>

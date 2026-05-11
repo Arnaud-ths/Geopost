@@ -1,0 +1,31 @@
+<!--
+  BLOC 04 — Hero texte + visuel décoratif
+  ========================================
+  Usage : H1 PORTÉ PAR LE TEXTE HTML (jamais l'image), image décorative en dessous
+          avec alt="" (pour ne pas être annoncée aux lecteurs d'écran si elle est
+          purement esthétique). Si l'image porte un message → alt descriptif.
+  Tokens : {{H1_TEXT}}, {{HERO_IMAGE_URL}}, {{HERO_IMAGE_ALT}} (vide si déco),
+           {{HERO_IMAGE_WIDTH}} (défaut 640)
+  Conformité : H1 lisible images bloquées, contraste AA, mobile responsive,
+               taille typo mobile via .h1-mobile, dark mode ready
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td align="center" class="pad-mobile" style="padding: 16px 32px 8px 32px;">
+      <h1 class="text-dark h1-mobile" style="margin:0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 800; line-height: 1.15; color: #1a1a1a; letter-spacing: -0.5px;">
+        {{H1_TEXT}}
+      </h1>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" style="padding: 0;">
+      <img
+        src="{{HERO_IMAGE_URL}}"
+        alt="{{HERO_IMAGE_ALT}}"
+        width="{{HERO_IMAGE_WIDTH}}"
+        height="auto"
+        style="display:block; width:100%; max-width:{{HERO_IMAGE_WIDTH}}px; height:auto; border:0; outline:none; text-decoration:none;"
+      />
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,45 @@
+<!--
+  BLOC 11 — Image gauche + texte droite (responsive stack)
+  =========================================================
+  Usage : bloc service / nouveauté avec visuel.
+  Tokens : {{IMAGE_URL}}, {{IMAGE_ALT}}, {{IMAGE_WIDTH}} (défaut 260),
+           {{SUBTITLE}} (eyebrow), {{TITLE}}, {{TEXT}},
+           {{LINK_URL}}, {{LINK_LABEL}}, {{COLOR_PRIMARY}}
+  Conformité : stack vertical mobile, alt requis, lien explicite,
+               taille image mobile fluide
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="bg-white" style="background:#ffffff;">
+  <tr>
+    <td class="pad-mobile" style="padding: 8px 32px 16px 32px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <!-- Image -->
+          <td class="stack" valign="middle" width="260" style="width:260px; padding-right: 24px;">
+            <img
+              src="{{IMAGE_URL}}"
+              alt="{{IMAGE_ALT}}"
+              width="{{IMAGE_WIDTH}}"
+              height="auto"
+              style="display:block; width:100%; max-width:{{IMAGE_WIDTH}}px; height:auto; border:0; outline:none; border-radius:6px;"
+            />
+          </td>
+          <!-- Texte -->
+          <td class="stack" valign="middle">
+            <p style="margin:0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{COLOR_PRIMARY}};">
+              {{SUBTITLE}}
+            </p>
+            <h3 class="text-dark" style="margin:0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; line-height: 1.25; color: #1a1a1a;">
+              {{TITLE}}
+            </h3>
+            <p class="text-muted" style="margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.5; color: #4a4a4a;">
+              {{TEXT}}
+            </p>
+            <a href="{{LINK_URL}}" target="_blank" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: {{COLOR_PRIMARY}}; text-decoration: underline;">
+              {{LINK_LABEL}} →
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

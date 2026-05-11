@@ -1,0 +1,44 @@
+<!--
+  BLOC 15 — Footer légal RGPD complet
+  ====================================
+  Usage : footer à la fin de TOUT email Geopost. Conforme RGPD pays-spécifique.
+  Tokens : {{BU_NAME}}, {{LEGAL_ADDRESS}}, {{LEGAL_RGPD_TEXT}},
+           {{UNSUB_URL}}, {{PREFS_URL}}, {{CONTACT_DPO_EMAIL}},
+           {{LINK_LEGAL_NOTICE_URL}}, {{LINK_PRIVACY_URL}},
+           {{SOCIAL_FB_URL}}, {{SOCIAL_LI_URL}} (optionnels)
+  Conformité : adresse postale BU complète, lien désabonnement actif et 1-clic,
+               mention RGPD pays, contact DPO, contraste AA même en small print
+-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#2e2e2f" style="background:#2e2e2f;">
+  <tr>
+    <td class="pad-mobile" style="padding: 32px;">
+      <!-- Désabonnement en premier (visibilité) -->
+      <p style="margin:0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #ffffff; text-align:center;">
+        <a href="{{UNSUB_URL}}" target="_blank" style="color: #ffffff; text-decoration: underline;">Se désabonner</a>
+        &nbsp;·&nbsp;
+        <a href="{{PREFS_URL}}" target="_blank" style="color: #ffffff; text-decoration: underline;">Préférences emails</a>
+      </p>
+
+      <!-- Adresse postale -->
+      <p style="margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.5; color: #d4d4d4; text-align:center;">
+        <strong>{{BU_NAME}}</strong><br/>
+        {{LEGAL_ADDRESS}}
+      </p>
+
+      <!-- Mention RGPD pays-spécifique -->
+      <p style="margin:0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height: 1.5; color: #a1a1aa; text-align:left;">
+        {{LEGAL_RGPD_TEXT}}
+        Vous pouvez exercer vos droits (accès, rectification, opposition, limitation, portabilité, effacement) en écrivant à
+        <a href="mailto:{{CONTACT_DPO_EMAIL}}" style="color: #d4d4d4; text-decoration: underline;">{{CONTACT_DPO_EMAIL}}</a>
+        ou par courrier à l'adresse ci-dessus.
+      </p>
+
+      <!-- Liens légaux -->
+      <p style="margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #a1a1aa; text-align:center;">
+        <a href="{{LINK_LEGAL_NOTICE_URL}}" target="_blank" style="color: #a1a1aa; text-decoration: underline;">Mentions légales</a>
+        &nbsp;·&nbsp;
+        <a href="{{LINK_PRIVACY_URL}}" target="_blank" style="color: #a1a1aa; text-decoration: underline;">Politique de confidentialité</a>
+      </p>
+    </td>
+  </tr>
+</table>
